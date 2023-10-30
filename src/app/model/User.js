@@ -15,16 +15,27 @@ const User = new Schema(
             type: Number,
             required: true
         },
+        password: {
+            type: String
+        },
         email: {
             type: String,
             maxLength: 255,
+        },
+        role: {
+            type: Number,
+            enum: [1, 2, 3],    // 1.Người dùng, 2.Staff, 3.Admin
+            default: 1
         },
         waterMeters: [
             {
                 type: Schema.Types.ObjectId,
                 ref: "WaterMeter",
             },
-        ],
+        ]
+        // waterMeters: {
+        //     type: String
+        // }
     },
     {
         timestamps: true,

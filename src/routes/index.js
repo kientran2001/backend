@@ -1,4 +1,5 @@
 const usersRouter = require('./users')
+const waterMetersRouter = require('./waterMeters')
 
 function route(app) {
     
@@ -6,6 +7,7 @@ function route(app) {
         res.send('Hello World')
     })
     app.use('/users', usersRouter)
+    app.use('/waterMeters', waterMetersRouter)
     
 }
 
