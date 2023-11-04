@@ -1,40 +1,55 @@
 const User = require("../model/User");
 const WaterMeter = require("../model/WaterMeter");
 
-class UserController {
-    showAll(req, res, next) {
-        User.find({})
-            .then((users) => res.json(users))
-            .catch(next);
-    }
+const UserController = {
+    async showAll(req, res, next) {
+        try {
+            const users = await User.find({})
+            res.status(200).json(users)
+        } catch (e) {
+            res.status(500).json(e)
+        }
+    },
 
-    show(req, res, next) {
-        User.find({ _id: req.params.id })
-            .then((user) => res.json(user))
-            .catch(next);
-    }
+    async show(req, res, next) {
+        try {
+            const user = await User.find({ _id: req.params.id })
+            res.status(200).json(user)
+        } catch (e) {
+            res.status(500).json(e)
+        }
+        // User.find({ _id: req.params.id })
+        //     .then((user) => res.json(user))
+        //     .catch(next);
+    },
 
-    create(req, res, next) {
-        const user = new User(req.body);
-        user
-            .save()
-            .then((users) => res.json(users))
-            .catch((error) => { });
-    }
-
-    update(req, res, next) {
-        User.updateOne({ _id: req.params.id }, req.body)
+    update: async (req, res, next) => {
+        await User.updateOne({ _id: req.params.id }, req.body)
             .then(res.status(200).json("Updated successfully!"))
             .catch(next);
-    }
+    },
 
-    delete(req, res, next) {
-        User.deleteOne({ _id: req.params.id })
-            .then((users) => {
-                res.status(200).json("Deleted successfully");
+    delete: async (req, res, next) => {
+        try {
+            const user = await User.findById(req.params.id)
+            const waterMeters = user.waterMeters
+            
+            waterMeters.forEach(async waterMeter => {
+                await WaterMeter.deleteOne({ _id: waterMeter })
             })
-            .catch(next);
-    }
+
+            await User.deleteOne({ _id: req.params.id })
+            res.status(200).json("Deleted successfully!")
+        } catch (e) {
+            res.status(500).json(e)
+        }
+
+        // User.deleteOne({ _id: req.params.id })
+        //     .then((users) => {
+        //         res.status(200).json("Deleted successfully");
+        //     })
+        //     .catch(next);
+    },
 
     async waterMetersOfUser(req, res, next) {
         try {
@@ -54,4 +69,4 @@ class UserController {
     }
 }
 
-module.exports = new UserController();
+module.exports = UserController

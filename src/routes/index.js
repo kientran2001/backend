@@ -1,5 +1,6 @@
 const usersRouter = require('./users')
 const waterMetersRouter = require('./waterMeters')
+const authRouter = require('./auth')
 
 function route(app) {
     
@@ -8,6 +9,7 @@ function route(app) {
     })
     app.use('/users', usersRouter)
     app.use('/waterMeters', waterMetersRouter)
+    app.use('/auth', authRouter)
     
 }
 

@@ -4,21 +4,23 @@ const mongooseDelete = require("mongoose-delete");
 
 const Schema = mongoose.Schema;
 
-const WaterMeter = new Schema(
+const Home = new Schema(
     {
-        code: {
+        building: {
             type: String,
-            maxLength: 100,
-            unique: true,
             required: true
         },
-        homeId: {
+        address: {
+            type: String,
+            required: true
+        },
+        userId: {
             type: Schema.Types.ObjectId,
-            ref: 'Home'
+            ref: "User"
         },
-        dateInstallation: {
-            type: Date,
-            required: true
+        waterMeterId: {
+            type: Schema.Types.ObjectId,
+            ref: "WaterMeter"
         }
     },
     {
@@ -28,9 +30,9 @@ const WaterMeter = new Schema(
 
 // Add plugins
 mongoose.plugin(slug);
-WaterMeter.plugin(mongooseDelete, {
+Home.plugin(mongooseDelete, {
     deletedAt: true,
     overrideMethods: "all",
 });
 
-module.exports = mongoose.model("WaterMeter", WaterMeter);
+module.exports = mongoose.model("Home", Home);

@@ -13,10 +13,12 @@ const User = new Schema(
         },
         phoneNumber: {
             type: Number,
-            required: true
+            required: true,
+            unique: true
         },
         password: {
-            type: String
+            type: String,
+            minLength: 6
         },
         email: {
             type: String,
@@ -27,10 +29,10 @@ const User = new Schema(
             enum: [1, 2, 3],    // 1.Người dùng, 2.Staff, 3.Admin
             default: 1
         },
-        waterMeters: [
+        homes: [
             {
                 type: Schema.Types.ObjectId,
-                ref: "WaterMeter",
+                ref: "Home",
             },
         ]
         // waterMeters: {
