@@ -1,6 +1,6 @@
 const path = require("path");
 const express = require("express");
-const { engine } = require("express-handlebars");
+const handlebars = require("express-handlebars");
 var bodyParser = require("body-parser");
 var cors = require("cors");
 const morgan = require("morgan");
@@ -19,9 +19,9 @@ db.connect();
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
-  express.urlencoded({
-    extended: true,
-  })
+    express.urlencoded({
+        extended: true,
+    })
 );
 app.use(express.json());
 
@@ -41,13 +41,13 @@ app.use(morgan("combined"));
 
 // Template engine
 app.engine(
-  "handlebars",
-  engine({
-    extname: "hbs",
-    helpers: {
-      sum: (a, b) => a + b,
-    },
-  })
+    "hbs",
+    handlebars.engine({
+        extname: "hbs",
+        helpers: {
+            sum: (a, b) => a + b,
+        },
+    })
 );
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "resources", "views"));
@@ -56,5 +56,5 @@ app.set("views", path.join(__dirname, "resources", "views"));
 route(app);
 
 app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`);
+    console.log(`App listening at http://localhost:${port}`);
 });

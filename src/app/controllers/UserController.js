@@ -1,17 +1,23 @@
 const User = require("../model/User");
+const Home = require("../model/Home");
 const WaterMeter = require("../model/WaterMeter");
+const Statistic = require("../model/Statistic");
+const { multipleMongooseToObject } = require('../../utils/mongoose')
 
 const UserController = {
-    async showAll(req, res, next) {
+    showAll: async(req, res, next) => {
         try {
             const users = await User.find({})
-            res.status(200).json(users)
+            // res.status(200).json(users)
+            res.render('user/show-all', {
+                users: multipleMongooseToObject(users)
+            })
         } catch (e) {
             res.status(500).json(e)
         }
     },
 
-    async show(req, res, next) {
+    show: async(req, res, next) => {
         try {
             const user = await User.find({ _id: req.params.id })
             res.status(200).json(user)
@@ -23,19 +29,28 @@ const UserController = {
         //     .catch(next);
     },
 
+    add: (req, res, next) => {
+        res.render('user/register')
+    },
+
     update: async (req, res, next) => {
-        await User.updateOne({ _id: req.params.id }, req.body)
-            .then(res.status(200).json("Updated successfully!"))
-            .catch(next);
+        try {
+            await User.updateOne({ _id: req.params.id }, req.body)
+            res.status(200).json("Updated successfully!")
+        } catch (e) {
+            res.status(500).json(e)
+        }
     },
 
     delete: async (req, res, next) => {
         try {
             const user = await User.findById(req.params.id)
-            const waterMeters = user.waterMeters
+            const homes = user.homes
             
-            waterMeters.forEach(async waterMeter => {
-                await WaterMeter.deleteOne({ _id: waterMeter })
+            homes.forEach(async homeId => {
+                const home = await Home.findById(homeId)
+                home.userId = null
+                await home.save()
             })
 
             await User.deleteOne({ _id: req.params.id })
@@ -51,7 +66,7 @@ const UserController = {
         //     .catch(next);
     },
 
-    async waterMetersOfUser(req, res, next) {
+    homesOfUser: async(req, res, next) => {
         try {
             const id = req.params.id;
             const user = await User.findById(id);
@@ -59,9 +74,8 @@ const UserController = {
                 return res.status(404).json({ error: "User not found" });
             }
 
-            // Lấy toàn bộ WaterMeter của User
-            const waterMeters = await WaterMeter.find({ userId: id });
-            res.json(waterMeters);
+            const homes = await WaterMeter.find({ userId: id });
+            res.status(200).json(homes);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: "Internal Server Error" });

@@ -1,0 +1,41 @@
+<table class="table mt-4">
+    <thead>
+        <tr>
+            <th scope="col">STT</th>
+            <th scope="col">ID</th>
+            <th scope="col">Tên</th>
+            <th scope="col">Điện thoại</th>
+            <th scope="col">Email</th>
+            {{!-- <th scope="col">Homes' ID</th> --}}
+            <th scope="col">Role</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {{#each users}}
+        <tr>
+            <th scope="row">{{sum @index 1}}</th>
+            <td>{{this._id}}</td>
+            <td>{{this.name}}</td>
+            <td>{{this.phoneNumber}}</td>
+            <td>{{this.email}}</td>
+            {{!-- <td>{{this.email}}</td> --}}
+            {{!-- <td>
+                {{#each this.homes}}
+                <ul>
+                    <li>{{this}}</li>
+                </ul>
+                {{/each}}
+            </td> --}}
+            <td>{{this.role}}</td>
+            <td>
+                <a href="/user/{{this._id}}" class="btn btn-info">Thông tin</a>
+                <a href="/user/{{this._id}}/edit" class="ms-1 btn btn-warning">Sửa</a>
+                <a href="" class="ms-1 btn btn-danger" data-bs-toggle="modal" data-id="{{this._id}}"
+                    data-bs-target="#delete-course-modal">Xoá</a>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>

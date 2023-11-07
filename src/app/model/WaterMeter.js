@@ -18,7 +18,8 @@ const WaterMeter = new Schema(
         },
         dateInstallation: {
             type: Date,
-            required: true
+            required: true,
+            default: new Date
         }
     },
     {

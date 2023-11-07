@@ -1,0 +1,30 @@
+<table class="table mt-4">
+    <thead>
+        <tr>
+            <th scope="col">STT</th>
+            <th scope="col">ID Người đại diện</th>
+            <th scope="col">Toà nhà</th>
+            <th scope="col">Địa chỉ</th>
+            <th scope="col">ID đồng hồ</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {{#each homes}}
+        <tr>
+            <th scope="row">{{sum @index 1}}</th>
+            <td>{{this.userId}}</td>
+            <td>{{this.building}}</td>
+            <td>{{this.address}}</td>
+            <td>{{this.waterMeterId}}</td>
+            <td>
+                <a href="/home/home-details/{{this._id}}" class="btn btn-info">Thông tin</a>
+                <a href="/home/{{this._id}}/edit" class="ms-1 btn btn-warning">Sửa</a>
+                <a href="" class="ms-1 btn btn-danger" data-bs-toggle="modal" data-id="{{this._id}}"
+                    data-bs-target="#delete-course-modal">Xoá</a>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>

@@ -10,33 +10,27 @@ const Statistic = new Schema(
             type: Schema.Types.ObjectId,
             ref: "WaterMeter"
         },
-        lastIndex: {
+        index: {
             type: Number,
-            required: true
+            required: true,
+            default: 0
         },
-        lastDate: {
+        date: {
             type: Date,
-            required: true
-        },
-        currentIndex: {
-            type: Number,
-            required: true
-        },
-        currentDate: {
-            type: Date,
-            required: true
+            required: true,
+            default: new Date
         }
     },
     {
-        timestamps: true,
+        timestamps: false,
     }
 );
 
 // Add plugins
-mongoose.plugin(slug);
-Statistic.plugin(mongooseDelete, {
-    deletedAt: true,
-    overrideMethods: "all",
-});
+// mongoose.plugin(slug);
+// Statistic.plugin(mongooseDelete, {
+//     deletedAt: true,
+//     overrideMethods: "all",
+// });
 
 module.exports = mongoose.model("Statistic", Statistic);

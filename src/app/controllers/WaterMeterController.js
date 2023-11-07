@@ -1,5 +1,7 @@
-const WaterMeter = require("../model/WaterMeter");
 const User = require("../model/User");
+const Home = require("../model/Home");
+const WaterMeter = require("../model/WaterMeter");
+const Statistic = require("../model/Statistic");
 
 
 const WaterMeterController = {
@@ -24,13 +26,13 @@ const WaterMeterController = {
     create: async (req, res, next) => {
         try {
             const waterMeter = new WaterMeter(req.body);
-            const user = await User.findById({ _id: req.body.userId })
-            if (!user) {
+            const home = await Home.findById(waterMeter.homeId)
+            if (!home) {
                 return res.status(404).json("User not found")
             }
 
-            await user.waterMeters.push(waterMeter._id)
-            await user.save()
+            home.waterMeterId = waterMeter._id
+            await home.save()
             await waterMeter.save()
             res.status(200).json(waterMeter)
         } catch (e) {
@@ -50,16 +52,18 @@ const WaterMeterController = {
     delete: async (req, res, next) => {
         try {
             const waterMeter = await WaterMeter.findById(req.params.id)
-            const userId = waterMeter.userId
-            const user = await User.findById(userId)
+            const homeId = waterMeter.homeId
+            const home = await User.findById(homeId)
+            if (home) {
+                await Home.deleteOne({ _id: homeId })
+            }
 
-            // console.log('user', user)
-            const waterMeters = user.waterMeters.filter(p => p.toString() !== req.params.id.toString())
-            user.waterMeters = waterMeters
-            await user.save()
-
+            // console.log('home', home)
+            // const waterMeters = user.waterMeters.filter(p => p.toString() !== req.params.id.toString())
+            // user.waterMeters = waterMeters
+            // await user.save()
             // console.log('user updated:', user)
-
+            
             await WaterMeter.deleteOne({ _id: req.params.id })
             res.status(200).json("Deleted successfully");
         } catch (e) {
@@ -67,7 +71,7 @@ const WaterMeterController = {
         }
     },
 
-    userOfWaterMeter: async (req, res, next) => {
+    homeOfWaterMeter: async (req, res, next) => {
         try {
             const waterMeterId = req.params.id;
 
@@ -78,8 +82,11 @@ const WaterMeterController = {
             }
 
             // Lấy thông tin User của WaterMeter
-            const user = await User.findById(waterMeter.userId);
-            res.json(user);
+            const home = await Home.findById(waterMeter.homeId);
+            if (!home) {
+                return res.status(404).json({ error: "Home not found" });
+            }
+            res.status(200).json(home);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Internal Server Error' });

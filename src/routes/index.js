@@ -1,16 +1,19 @@
-const usersRouter = require('./users')
-const waterMetersRouter = require('./waterMeters')
+const userRouter = require('./user')
+const waterMeterRouter = require('./waterMeter')
 const authRouter = require('./auth')
+const homeRouter = require('./home')
+const statisticRouter = require('./statistic')
 
 function route(app) {
     
     app.get('/', (req, res) => {
-        res.send('Hello World')
+        res.render('home')
     })
-    app.use('/users', usersRouter)
-    app.use('/waterMeters', waterMetersRouter)
     app.use('/auth', authRouter)
-    
+    app.use('/user', userRouter)
+    app.use('/home', homeRouter)
+    app.use('/waterMeter', waterMeterRouter)
+    app.use('/statistic', statisticRouter)
 }
 
 module.exports = route

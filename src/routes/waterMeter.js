@@ -8,6 +8,6 @@ router.get('/:id', waterMeterController.show)
 router.post('/create', waterMeterController.create)
 router.put('/:id', waterMeterController.update)
 router.delete('/:id', waterMeterController.delete)
-router.get('/:id/user', waterMeterController.userOfWaterMeter)
+router.get('/:id/home', waterMeterController.homeOfWaterMeter)
 
 module.exports = router

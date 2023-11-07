@@ -16,11 +16,12 @@ const Home = new Schema(
         },
         userId: {
             type: Schema.Types.ObjectId,
-            ref: "User"
+            ref: "User",
         },
         waterMeterId: {
             type: Schema.Types.ObjectId,
-            ref: "WaterMeter"
+            ref: "WaterMeter",
+            default: null
         }
     },
     {
