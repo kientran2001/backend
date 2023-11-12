@@ -1,0 +1,30 @@
+<table class="table mt-4 ms-4">
+    <tbody>
+        <tr>
+            <th class="col-md-2" scope="row">ID</th>
+            <td class="col-md-6">{{user._id}}</td>
+        </tr>
+        <tr>
+            <th class="col-md-2" scope="row">Tên</th>
+            <td class="col-md-6">{{user.name}}</td>
+        </tr>
+        <tr>
+            <th class="col-md-2" scope="row">Số điện thoại</th>
+            <td class="col-md-6">{{user.phoneNumber}}</td>
+        </tr>
+        <tr>
+            <th class="col-md-2" scope="row">Email</th>
+            <td class="col-md-6">{{user.email}}</td>
+        </tr>
+        <tr>
+            <th class="col-md-2" scope="row">ID căn hộ</th>
+            <td class="col-md-6">
+                {{#each user.homes}}
+                <ul>
+                    <li>{{this}}</li>
+                </ul>
+                {{/each}}
+            </td>
+        </tr>
+    </tbody>
+</table>

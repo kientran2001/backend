@@ -10,14 +10,17 @@ const AuthController = {
 
             // Create new user
             const newUser = new User({
-                name: req.body.name,
-                phoneNumber: req.body.phoneNumber,
-                email: req.body.email,
+                // name: req.body.name,
+                // phoneNumber: req.body.phoneNumber,
+                // email: req.body.email,
+                ...req.body,
                 password: hashed
+                // role: req.body.role
             })
 
             const user = await newUser.save()
-            res.status(200).json(user)
+            // res.status(200).json(user)
+            res.redirect('/user')
         } catch (err) {
             res.status(500).json(err);
         }

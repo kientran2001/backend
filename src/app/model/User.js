@@ -27,7 +27,6 @@ const User = new Schema(
         role: {
             type: Number,
             enum: [1, 2, 3],    // 1.Người dùng, 2.Staff, 3.Admin
-            default: 1
         },
         homes: [
             {
@@ -35,9 +34,6 @@ const User = new Schema(
                 ref: "Home",
             },
         ]
-        // waterMeters: {
-        //     type: String
-        // }
     },
     {
         timestamps: true,

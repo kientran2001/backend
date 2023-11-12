@@ -1,9 +1,14 @@
+<div class="mt-4" style="color: forestgreen;">
+    <h2>Thông tin các căn hộ</h2>
+</div>
+
 <table class="table mt-4">
     <thead>
         <tr>
             <th scope="col">STT</th>
-            <th scope="col">ID Người đại diện</th>
+            <th scope="col">SĐT Người đại diện</th>
             <th scope="col">Toà nhà</th>
+            <th scope="col">Mã căn hộ/ Số phòng</th>
             <th scope="col">Địa chỉ</th>
             <th scope="col">ID đồng hồ</th>
             <th scope="col">Action</th>
@@ -14,17 +19,64 @@
         {{#each homes}}
         <tr>
             <th scope="row">{{sum @index 1}}</th>
-            <td>{{this.userId}}</td>
+            <td>{{this.phoneNumber}}</td>
             <td>{{this.building}}</td>
+            <td>{{this.code}}</td>
             <td>{{this.address}}</td>
             <td>{{this.waterMeterId}}</td>
             <td>
                 <a href="/home/home-details/{{this._id}}" class="btn btn-info">Thông tin</a>
                 <a href="/home/{{this._id}}/edit" class="ms-1 btn btn-warning">Sửa</a>
-                <a href="" class="ms-1 btn btn-danger" data-bs-toggle="modal" data-id="{{this._id}}"
-                    data-bs-target="#delete-course-modal">Xoá</a>
+                <a class="ms-1 btn btn-danger" data-bs-toggle="modal" data-id="{{this._id}}"
+                    data-bs-target="#delete-home-modal">Xoá</a>
+            </td>
+        </tr>
+        {{else}}
+        <tr>
+            <td colspan="5" class="text-center">
+                Hệ thống chưa có căn hộ nào.
+                <a href="/home/add">Thêm căn hộ</a>
             </td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+
+{{!-- Confirm delete home --}}
+<div id="delete-home-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xoá căn hộ này?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn chắc chắn muốn xoá căn hộ này?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-delete-home" type="button" class="btn btn-danger">Xoá bỏ</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{!-- Delete hidden form --}}
+<form name="delete-home-form" method="POST"></form>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script>
+    var deleteHomeModal = document.getElementById('delete-home-modal');
+    deleteHomeModal.addEventListener('show.bs.modal', (event) => {
+        var button = event.relatedTarget
+        var homeId = button.getAttribute('data-id')
+        var deleteForm = document.forms['delete-home-form']
+        var btnDeleteHome = document.getElementById('btn-delete-home');
+
+        btnDeleteHome.onclick = () => {
+            deleteForm.action = '/home/' + homeId + '?_method=delete'
+            deleteForm.submit()
+        }
+    })
+</script>

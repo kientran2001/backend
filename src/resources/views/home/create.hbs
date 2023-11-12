@@ -2,18 +2,23 @@
 	<h3>Thêm căn hộ</h3>
 	<form method="post" action="/home/create">
 		<div class="mb-3">
-			<label for="building" class="form-label">Toà nhà</label>
+			<label for="building" class="form-label">Toà nhà *</label>
 			<input type="text" class="form-control" id="building" name="building">
 		</div>
 
 		<div class="mb-3">
-			<label for="address" class="form-label">Địa chỉ / Số phòng</label>
+			<label for="code" class="form-label">Mã căn hộ/ Số phòng *</label>
+			<input type="text" class="form-control" id="code" name="code">
+		</div>
+
+		<div class="mb-3">
+			<label for="address" class="form-label">Địa chỉ *</label>
 			<input type="text" class="form-control" id="address" name="address">
 		</div>
 
 		<div class="mb-3">
-			<label for="userId" class="form-label">ID người dùng</label>
-			<input type="text" class="form-control" id="userId" name="userId">
+			<label for="phoneNumber" class="form-label">SĐT người dùng</label>
+			<input type="number" class="form-control" id="phoneNumber" name="phoneNumber">
 		</div>
 
 		{{!-- <div class="mb-3">

@@ -1,0 +1,26 @@
+<div class="mt-4">
+	<h3>Cập nhật thông tin căn hộ</h3>
+	<form method="POST" action="/home/{{home._id}}/update?_method=PUT">
+        <div class="mb-3">
+			<label for="building" class="form-label">Toà nhà *</label>
+			<input type="text" class="form-control" value="{{home.building}}"  id="building" name="building">
+		</div>
+
+		<div class="mb-3">
+			<label for="code" class="form-label">Mã căn hộ/ Số phòng *</label>
+			<input type="text" class="form-control" value="{{home.code}}" id="code" name="code">
+		</div>
+
+		<div class="mb-3">
+			<label for="address" class="form-label">Địa chỉ *</label>
+			<input type="text" class="form-control" value="{{home.address}}" id="address" name="address">
+		</div>
+		
+		<div class="mb-3">
+			<label for="phoneNumber" class="form-label">SĐT người dùng</label>
+			<input type="number" class="form-control" value="{{home.phoneNumber}}" id="phoneNumber" name="phoneNumber">
+		</div>
+		
+		<button type="submit" class="btn btn-primary">Lưu lại</button>
+	</form>
+</div>

@@ -2,7 +2,7 @@ const User = require("../model/User");
 const Home = require("../model/Home");
 const WaterMeter = require("../model/WaterMeter");
 const Statistic = require("../model/Statistic");
-const { multipleMongooseToObject } = require('../../utils/mongoose');
+const { mongooseToObject, multipleMongooseToObject } = require('../../utils/mongoose');
 const mongoose = require("mongoose");
 
 
@@ -16,7 +16,7 @@ const HomeController = {
 
             })
         } catch (e) {
-            res.status(500).json(e)
+            res.status(500).json({ e: "Internal Server Error" })
         }
     },
 
@@ -25,7 +25,7 @@ const HomeController = {
             const home = await Home.find({ _id: req.params.id })
             res.status(200).json(home)
         } catch (e) {
-            res.status(500).json(e)
+            res.status(500).json({ e: "Internal Server Error" })
         }
     },
 
@@ -36,28 +36,40 @@ const HomeController = {
     create: async (req, res, next) => {
         try {
             const home = new Home(req.body);
-
-            const user = await User.findById(home.userId)
+            const phoneNumber = home.phoneNumber
+            const user = await User.findOne({ phoneNumber: phoneNumber })
             if (user) {
                 user.homes.push(home._id)
                 await user.save()
-            } else {
-                home.userId = null
             }
-            
+            home.waterMeterId = null
+
             await home.save()
-            res.status(200).json(home)
+            // res.status(200).json(home)
+            res.redirect('/home')
         } catch (e) {
             res.status(500).json(e)
         }
     },
 
+    edit: async (req, res, next) => {
+        try {
+            const home = await Home.findById(req.params.id)
+            res.render('home/edit', {
+                home: mongooseToObject(home)
+            })
+        } catch (e) {
+            res.status(500).json({ e: "Internal Server Error" })
+        }
+    },
+
     update: async (req, res, next) => {
         try {
-            await Home.updateOne({ _id: req.params.id }, req.body)
-            res.status(200).json("Updated successfully!")
+            await Home.updateOne({ _id: req.params.id }, req.body);
+            // res.status(200).json("Updated successfully!")
+            res.redirect('/home')
         } catch (e) {
-            res.status(500).json(e)
+            res.status(500).json({ e: "Internal Server Error" })
         }
     },
 
@@ -68,8 +80,8 @@ const HomeController = {
             // users.forEach(async home => {
             //     await Home.deleteOne({ _id: home })
             // })
-            const userId = home.userId
-            const user = await User.findById(userId)
+            const phoneNumber = home.phoneNumber
+            const user = await User.findOne({ phoneNumber: phoneNumber })
             if (user) {
                 const homes = user.homes.filter(p => p.toString() !== req.params.id.toString())
                 user.homes = homes
@@ -81,9 +93,10 @@ const HomeController = {
                 await WaterMeter.deleteOne(waterMeterId)
             }
             await Home.deleteOne({ _id: req.params.id })
-            res.status(200).json("Deleted successfully!")
+            // res.status(200).json("Deleted successfully!")
+            res.redirect('back')
         } catch (e) {
-            res.status(500).json(e)
+            res.status(500).json({ e: "Internal Server Error" })
         }
     },
 
@@ -94,8 +107,8 @@ const HomeController = {
             if (!home) {
                 return res.status(404).json({ error: "Home not found" });
             }
-
-            const user = await User.findById(home.userId)
+            const phoneNumber = home.phoneNumber
+            const user = await User.findOne({ phoneNumber: phoneNumber })
             res.status(200).json(user)
         } catch (error) {
             console.error(error);

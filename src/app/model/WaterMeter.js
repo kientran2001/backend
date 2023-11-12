@@ -14,7 +14,8 @@ const WaterMeter = new Schema(
         },
         homeId: {
             type: Schema.Types.ObjectId,
-            ref: 'Home'
+            ref: 'Home',
+            unique: true
         },
         dateInstallation: {
             type: Date,

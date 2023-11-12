@@ -10,18 +10,23 @@ const Home = new Schema(
             type: String,
             required: true
         },
+        code: {
+            type: Number,
+            required: true
+        },
         address: {
             type: String,
             required: true
         },
-        userId: {
-            type: Schema.Types.ObjectId,
-            ref: "User",
+        phoneNumber: {
+            type: Number,
+            // ref: "User",
+            unique: false
         },
         waterMeterId: {
             type: Schema.Types.ObjectId,
-            ref: "WaterMeter",
-            default: null
+            ref: "WaterMeter"
+            // default: null
         }
     },
     {
