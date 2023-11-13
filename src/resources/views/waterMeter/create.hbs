@@ -1,0 +1,21 @@
+<div class="mt-4">
+	<h3>Thêm đồng hồ</h3>
+	<form method="post" action="/waterMeter/create">
+		<div class="mb-3">
+			<label for="homeId" class="form-label">ID căn hộ</label>
+			<input type="text" class="form-control" value="{{homeId}}" id="homeId" name="homeId" readonly>
+		</div>
+
+		<div class="mb-3">
+			<label for="code" class="form-label">Mã số đồng hồ</label>
+			<input type="text" class="form-control" id="code" name="code">
+		</div>
+
+		<div class="mb-3">
+			<label for="dateInstallation" class="form-label">Ngày lắp đặt</label>
+			<input type="date" class="form-control" id="dateInstallation" name="dateInstallation">
+		</div>
+		
+		<button type="submit" class="btn btn-primary">Thêm đồng hồ</button>
+	</form>
+</div>

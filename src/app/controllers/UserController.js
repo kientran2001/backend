@@ -15,7 +15,7 @@ const UserController = {
                 users: multipleMongooseToObject(users)
             })
         } catch (e) {
-            res.status(500).json({ e: "Internal Server Error" })
+            res.status(500).json(e)
         }
     },
 
@@ -26,7 +26,7 @@ const UserController = {
                 user: mongooseToObject(user)
             })
         } catch (e) {
-            res.status(500).json({ e: "Internal Server Error" })
+            res.status(500).json(e)
         }
     },
 
@@ -41,7 +41,7 @@ const UserController = {
                 user: mongooseToObject(user)
             })
         } catch (e) {
-            res.status(500).json({ e: "Internal Server Error" })
+            res.status(500).json(e)
         }
     },
 
@@ -61,7 +61,7 @@ const UserController = {
             }
             res.redirect('/user')
         } catch (e) {
-            res.status(500).json({ e: "Internal Server Error" })
+            res.status(500).json(e)
         }
     },
 
@@ -78,18 +78,12 @@ const UserController = {
                 }
             })
 
-            await User.deleteOne({ _id: req.params.id })
+            await User.deleteOne(user)
             // res.status(200).json("Deleted successfully!")
             res.redirect('back')
         } catch (e) {
-            res.status(500).json({ e: "Internal Server Error" })
+            res.status(500).json(e)
         }
-
-        // User.deleteOne({ _id: req.params.id })
-        //     .then((users) => {
-        //         res.status(200).json("Deleted successfully");
-        //     })
-        //     .catch(next);
     },
 
     homesOfUser: async (req, res, next) => {
@@ -102,8 +96,8 @@ const UserController = {
 
             const homes = await Home.find({ _id: { $in: user.homes } })
             res.status(200).json(homes);
-        } catch (error) {
-            res.status(500).json({ error: "Internal Server Error" });
+        } catch (e) {
+            res.status(500).json(e)
         }
     }
 }

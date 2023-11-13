@@ -6,7 +6,7 @@
     <thead>
         <tr>
             <th scope="col">STT</th>
-            <th scope="col">ID</th>
+            {{!-- <th scope="col">ID</th> --}}
             <th scope="col">Tên</th>
             <th scope="col">Điện thoại</th>
             <th scope="col">Email</th>
@@ -20,7 +20,7 @@
         {{#each users}}
         <tr>
             <th scope="row">{{sum @index 1}}</th>
-            <td>{{this._id}}</td>
+            {{!-- <td>{{this._id}}</td> --}}
             <td>{{this.name}}</td>
             <td>{{this.phoneNumber}}</td>
             <td>{{this.email}}</td>

@@ -1,0 +1,160 @@
+<div class="mt-4"></div>
+<a href="/home" class="btn btn-primary">Quay lại</a>
+<h3 class="mt-3">Thông tin chi tiết căn hộ</h3>
+<div class="mt-4"></div>
+<table class="table mt-4 ms-4">
+    <tbody>
+        <tr>
+            <th class="col-md-2" scope="row">Thuộc tính</th>
+            <th class="col-md-6" scope="row">Thông tin</th>
+            <th class="col-md-4" scope="row">Action</th>
+        </tr>
+        <tr>
+            <th class="col-md-2" scope="row">ID</th>
+            <td class="col-md-2" scope="row">{{home._id}}</td>
+        </tr>
+        <tr>
+            <th class="col-md-2" scope="row">SĐT người đại diện</th>
+            <td class="col-md-6">{{home.phoneNumber}}</td>
+            <td class="col-md-4">
+                <a class="ms-1 btn btn-success" data-bs-toggle="modal" data-phoneNumber="{{home.phoneNumber}}"
+                    data-id="{{home._id}}" data-bs-target="#add-phone-modal">Thêm</a>
+                <a class="ms-1 btn btn-danger" data-bs-toggle="modal" data-phoneNumber="{{home.phoneNumber}}"
+                    data-id="{{home._id}}" data-bs-target="#delete-phone-modal">Xoá</a>
+            </td>
+        </tr>
+        <tr>
+            <th class="col-md-2" scope="row">Toà nhà</th>
+            <td class="col-md-6">{{home.building}}</td>
+        </tr>
+        <tr>
+            <th class="col-md-2" scope="row">Mã căn hộ/ Số phòng</th>
+            <td class="col-md-6">{{home.code}}</td>
+        </tr>
+        <tr>
+            <th class="col-md-2" scope="row">Địa chỉ</th>
+            <td class="col-md-6">{{home.address}}</td>
+        </tr>
+        <tr>
+            <th class="col-md-2" scope="row">ID đồng hồ</th>
+            <td class="col-md-6">{{home.waterMeterId}}</td>
+            <td class="col-md-4">
+                <a href="/waterMeter/{{home.waterMeterId}}" class="btn btn-info">Thông tin</a>
+                <a href="/waterMeter/home/{{home._id}}/addWaterMeter" class="btn btn-success">Thêm đồng hồ</a>
+                <a class="ms-1 btn btn-danger" data-bs-toggle="modal" data-id="{{home.waterMeterId}}"
+                    data-bs-target="#delete-waterMeter-modal">Xoá</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+{{!-- Add phone --}}
+<div id="add-phone-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm số điện thoại người đại diện căn hộ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Số điện thoại mới:
+                    <input type="number" class="form-control" id="new-phone-number" name="new-phone-number">
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-add-phone" type="button" class="btn btn-success">Thêm mới</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
+            </div>
+        </div>
+    </div>
+</div>
+<form name="add-phone-form" method="POST"></form>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    var addPhoneModal = document.getElementById('add-phone-modal');
+    addPhoneModal.addEventListener('show.bs.modal', (event) => {
+        var button = event.relatedTarget
+        var phoneNumber = button.getAttribute('data-phoneNumber')
+        var homeId = button.getAttribute('data-id')
+        var addForm = document.forms['add-phone-form']
+
+        var btnAddPhone = document.getElementById('btn-add-phone');
+
+        btnAddPhone.onclick = () => {
+            var newPhoneNumber = document.getElementById('new-phone-number').value
+            addForm.action = '/home/' + homeId + '/phone/' + newPhoneNumber
+            addForm.submit()
+        }
+    })
+</script>
+
+{{!-- Confirm delete phone --}}
+<div id="delete-phone-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xoá SĐT này của người đại diện căn hộ?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn chắc chắn muốn xoá?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-delete-phone" type="button" class="btn btn-danger">Xoá bỏ</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
+            </div>
+        </div>
+    </div>
+</div>
+<form name="delete-phone-form" method="POST"></form>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    var deletePhoneModal = document.getElementById('delete-phone-modal');
+    deletePhoneModal.addEventListener('show.bs.modal', (event) => {
+        var button = event.relatedTarget
+        var homeId = button.getAttribute('data-id')
+        var deleteForm = document.forms['delete-phone-form']
+        var btnDeletePhone = document.getElementById('btn-delete-phone');
+
+        btnDeletePhone.onclick = () => {
+            deleteForm.action = '/home/' + homeId +  '/deletePhone' + '?_method=delete'
+            deleteForm.submit()
+        }
+    })
+</script>
+
+{{!-- Confirm delete waterMeter --}}
+<div id="delete-waterMeter-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xoá đồng hồ của căn hộ này?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn chắc chắn muốn xoá?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-delete-waterMeter" type="button" class="btn btn-danger">Xoá bỏ</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
+            </div>
+        </div>
+    </div>
+</div>
+<form name="delete-waterMeter-form" method="POST"></form>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    var deleteWaterMeterModal = document.getElementById('delete-waterMeter-modal');
+    deleteWaterMeterModal.addEventListener('show.bs.modal', (event) => {
+        var button = event.relatedTarget
+        var waterMeterId = button.getAttribute('data-id')
+        var deleteForm = document.forms['delete-waterMeter-form']
+        var btnDeleteWaterMeter = document.getElementById('btn-delete-waterMeter');
+
+        btnDeleteWaterMeter.onclick = () => {
+            deleteForm.action = '/waterMeter/' + waterMeterId + '?_method=delete'
+            deleteForm.submit()
+        }
+    })
+</script>

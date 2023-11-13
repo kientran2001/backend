@@ -2,6 +2,7 @@ const User = require("../model/User");
 const Home = require("../model/Home");
 const WaterMeter = require("../model/WaterMeter");
 const Statistic = require("../model/Statistic");
+const { mongooseToObject, multipleMongooseToObject } = require('../../utils/mongoose');
 
 
 const WaterMeterController = {
@@ -16,8 +17,22 @@ const WaterMeterController = {
 
     show: async (req, res, next) => {
         try {
-            const waterMeter = await WaterMeter.find({ _id: req.params.id })
-            res.status(200).json(waterMeter)
+            const waterMeter = await WaterMeter.findById(req.params.id)
+            // res.status(200).json(waterMeter)
+            res.render('waterMeter/show', {
+                waterMeter: mongooseToObject(waterMeter)
+            })
+        } catch (e) {
+            res.status(500).json(e)
+        }
+    },
+
+    add: async (req, res, next) => {
+        try {
+            const homeId = req.params.homeId
+            res.render('waterMeter/create', {
+                homeId: homeId
+            })
         } catch (e) {
             res.status(500).json(e)
         }
@@ -34,7 +49,8 @@ const WaterMeterController = {
             home.waterMeterId = waterMeter._id
             await home.save()
             await waterMeter.save()
-            res.status(200).json(waterMeter)
+            // res.status(200).json(waterMeter)
+            res.redirect('/home/home-details/' + home._id)
         } catch (e) {
             res.status(500).json(e)
         }
@@ -53,19 +69,15 @@ const WaterMeterController = {
         try {
             const waterMeter = await WaterMeter.findById(req.params.id)
             const homeId = waterMeter.homeId
-            const home = await User.findById(homeId)
+            const home = await Home.findById(homeId)
             if (home) {
-                await Home.deleteOne({ _id: homeId })
+                home.waterMeterId = null
+                await home.save()
             }
 
-            // console.log('home', home)
-            // const waterMeters = user.waterMeters.filter(p => p.toString() !== req.params.id.toString())
-            // user.waterMeters = waterMeters
-            // await user.save()
-            // console.log('user updated:', user)
-            
-            await WaterMeter.deleteOne({ _id: req.params.id })
-            res.status(200).json("Deleted successfully");
+            await WaterMeter.deleteOne(waterMeter)
+            // res.status(200).json("Deleted successfully");
+            res.redirect('back')
         } catch (e) {
             res.status(500).json(e)
         }
