@@ -1,13 +1,15 @@
 const path = require("path");
 const express = require("express");
 const handlebars = require("express-handlebars");
+const cors = require("cors");
+const session = require("express-session");
 var bodyParser = require("body-parser");
-var cors = require("cors");
 const morgan = require("morgan");
 const exp = require("constants");
-const app = express();
 const methodOverride = require("method-override");
 require("dotenv").config();
+
+const app = express();
 const port = process.env.PORT || 5000;
 
 const route = require("./routes");
@@ -15,6 +17,12 @@ const db = require("./config/db");
 
 // Connect DB
 db.connect();
+
+app.use(session({
+    secret: process.env.SECRET_KEY,
+    resave: true,
+    saveUninitialized: true,
+}));
 
 app.use(express.static(path.join(__dirname, "public")));
 

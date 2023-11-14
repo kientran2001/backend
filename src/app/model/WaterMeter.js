@@ -21,6 +21,9 @@ const WaterMeter = new Schema(
             type: Date,
             required: true,
             default: new Date
+        },
+        qr: {
+            type: String
         }
     },
     {

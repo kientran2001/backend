@@ -56,7 +56,6 @@ const UserController = {
                 const hashed = await bcrypt.hash(password, salt)
                 await User.updateOne({ _id: req.params.id }, { ...req.body, password: hashed })
             } else {
-                console.log(123)
                 await User.updateOne({ _id: req.params.id }, req.body)
             }
             res.redirect('/user')

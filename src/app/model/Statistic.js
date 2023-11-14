@@ -10,7 +10,7 @@ const Statistic = new Schema(
             type: Schema.Types.ObjectId,
             ref: "WaterMeter"
         },
-        index: {
+        value: {
             type: Number,
             required: true,
             default: 0
@@ -19,6 +19,10 @@ const Statistic = new Schema(
             type: Date,
             required: true,
             default: new Date
+        },
+        recorder: {
+            type: Number,
+            unique: false
         }
     },
     {

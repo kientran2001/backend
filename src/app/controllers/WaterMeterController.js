@@ -2,6 +2,7 @@ const User = require("../model/User");
 const Home = require("../model/Home");
 const WaterMeter = require("../model/WaterMeter");
 const Statistic = require("../model/Statistic");
+const QR = require('qrcode')
 const { mongooseToObject, multipleMongooseToObject } = require('../../utils/mongoose');
 
 
@@ -45,8 +46,19 @@ const WaterMeterController = {
             if (!home) {
                 return res.status(404).json("User not found")
             }
-
             home.waterMeterId = waterMeter._id
+            const user = await User.findOne({ phoneNumber: home.phoneNumber })
+            const data = {
+                waterMeterId: waterMeter._id,
+                name: user.name,
+                phoneNumber: user.phoneNumber,
+                building: home.building,
+                homeCode: home.code,
+                address: home.address
+            }
+            let dataJson = JSON.stringify(data)
+            waterMeter.qr = await QR.toDataURL(dataJson)
+
             await home.save()
             await waterMeter.save()
             // res.status(200).json(waterMeter)

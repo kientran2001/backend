@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-const MiddlewareController = {
+module.exports = {
     //verifyToken
     verifyToken: (req, res, next) => {
         const accessToken = req.cookie.accessToken
@@ -20,7 +20,7 @@ const MiddlewareController = {
     },
 
     verifyAdminAuth: (req, res, next) => {
-        MiddlewareController.verifyToken(req, res, () => {
+        this.verifyToken(req, res, () => {
             if (req.user.role === 3) {
                 next();
             } else {
@@ -30,7 +30,7 @@ const MiddlewareController = {
     },
 
     verifyStaffAuth: (req, res, next) => {
-        MiddlewareController.verifyToken(req, res, () => {
+        this.verifyToken(req, res, () => {
             if (req.user.role === 2 || req.user.role === 3) {
                 next();
             } else {
@@ -40,4 +40,4 @@ const MiddlewareController = {
     },
 };
 
-module.exports = MiddlewareController;
+// module.exports = MiddlewareController;

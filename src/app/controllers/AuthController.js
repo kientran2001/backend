@@ -1,6 +1,7 @@
 const User = require('../model/User')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const { multipleMongooseToObject, mongooseToObject } = require('../../utils/mongoose')
 
 const AuthController = {
     registerUser: async (req, res, next) => {
@@ -56,21 +57,25 @@ const AuthController = {
 
             if (user && validPassword) {
                 const accessToken = AuthController.generateAccessToken(user);
+                res.session.isLoggedIn = true;
                 res.cookie("accessToken", accessToken, {
                     httpOnly: true,
                     secure: false,
                     sameSite: "strict"
                 });
 
-                res.status(200).json({
-                    accessToken,
-                    user: {
-                        _id: user._id,
-                        name: user.name,
-                        email: user.email,
-                        role: user.role
-                    }
-                })
+                const loggedInUser = {
+                    _id: user._id,
+                    name: user.name,
+                    phoneNumber: user.phoneNumber,
+                    email: user.email,
+                    role: user.role
+                }
+                res.redirect('/')
+                // res.render('home-page', {
+                //     accessToken,
+                //     user: mongooseToObject(loggedInUser)
+                // })
             }
         } catch (err) {
             res.status(500).json(err)
@@ -80,7 +85,14 @@ const AuthController = {
     logOut: async (req, res, next) => {
         //Clear cookies when user logs out
         res.clearCookie("accessToken");
-        res.status(200).json("Logged out successfully!");
+        req.session.destroy((err) => {
+            if (err) {
+                return res.status(500).json(err);
+            }
+            // res.status(200).json("Logged out successfully!");
+            res.redirect('/')
+        });
+        // res.status(200).json("Logged out successfully!");
     }
 }
 
