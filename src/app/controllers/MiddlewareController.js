@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 module.exports = {
     //verifyToken
     verifyToken: (req, res, next) => {
-        const accessToken = req.cookie.accessToken
+        const accessToken = req.cookies.accessToken
         if (accessToken) {
             // bearer token
             // const accessToken = token.split(" ")[1];
@@ -15,7 +15,7 @@ module.exports = {
                 next();
             });
         } else {
-            return res.status(401).json("You're not authenticated");
+            res.status(401).json("You're not authenticated");
         }
     },
 

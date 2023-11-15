@@ -32,11 +32,12 @@ const AuthController = {
             {
                 _id: user._id,
                 name: user.name,
+                phoneNumber: user.phoneNumber,
                 email: user.email,
                 role: user.role
             },
             process.env.JWT_ACESS_TOKEN,
-            { expiresIn: "30d" }
+            { expiresIn: "1d" }
         )
     },
 
@@ -44,10 +45,10 @@ const AuthController = {
         try {
             const user = await User.findOne({ phoneNumber: req.body.phoneNumber })
             if (!user) {
-                return res.status(404).json("Wrong username!")
+                res.status(404).json("Wrong phone number!")
             }
 
-            const validPassword = bcrypt.compare(
+            const validPassword = await bcrypt.compare(
                 req.body.password,
                 user.password
             );
@@ -55,27 +56,26 @@ const AuthController = {
                 return res.status(404).json("Wrong password");
             }
 
-            if (user && validPassword) {
+            if (user.role === 3 && validPassword) {
                 const accessToken = AuthController.generateAccessToken(user);
-                res.session.isLoggedIn = true;
                 res.cookie("accessToken", accessToken, {
                     httpOnly: true,
                     secure: false,
                     sameSite: "strict"
                 });
-
-                const loggedInUser = {
-                    _id: user._id,
-                    name: user.name,
-                    phoneNumber: user.phoneNumber,
-                    email: user.email,
-                    role: user.role
-                }
-                res.redirect('/')
-                // res.render('home-page', {
-                //     accessToken,
-                //     user: mongooseToObject(loggedInUser)
-                // })
+                res.cookie('logged_in', true, { expiresIn: '1d' })
+                req.session.regenerate(function (err) {
+                    if (err) return res.status(404).json(err)
+                    req.session.user = user
+                    req.session.save(function (err) {
+                        if (err) return res.status(404).json(err)
+                        res.redirect('/')
+                    })
+                })
+            } else {
+                return res.render('login', {
+                    isLoggedIn: false
+                })
             }
         } catch (err) {
             res.status(500).json(err)
@@ -85,6 +85,7 @@ const AuthController = {
     logOut: async (req, res, next) => {
         //Clear cookies when user logs out
         res.clearCookie("accessToken");
+        res.clearCookie("logged_in");
         req.session.destroy((err) => {
             if (err) {
                 return res.status(500).json(err);

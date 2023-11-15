@@ -3,7 +3,8 @@ const express = require("express");
 const handlebars = require("express-handlebars");
 const cors = require("cors");
 const session = require("express-session");
-var bodyParser = require("body-parser");
+const cookieParser = require('cookie-parser')
+const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const exp = require("constants");
 const methodOverride = require("method-override");
@@ -23,6 +24,7 @@ app.use(session({
     resave: true,
     saveUninitialized: true,
 }));
+app.use(cookieParser())
 
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -35,12 +37,12 @@ app.use(express.json());
 
 app.use(cors());
 
-// app.use(
-//     bodyParser.urlencoded({
-//         extended: false,
-//     }),
-// );
-// app.use(bodyParser.json());
+app.use(
+    bodyParser.urlencoded({
+        extended: false,
+    }),
+);
+app.use(bodyParser.json());
 
 app.use(methodOverride("_method"));
 

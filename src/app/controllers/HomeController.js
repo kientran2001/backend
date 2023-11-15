@@ -12,6 +12,7 @@ const HomeController = {
             const homes = await Home.find({}).sort({ address: 1 })
             // res.status(200).json(homes)
             res.render('home/show-all', {
+                isLoggedIn: true,
                 homes: multipleMongooseToObject(homes),
 
             })
@@ -24,7 +25,8 @@ const HomeController = {
         try {
             const home = await Home.findById(req.params.id)
             // res.status(200).json(home)
-            res.render('home/show', { 
+            res.render('home/show', {
+                isLoggedIn: true,
                 home: mongooseToObject(home)
             })
         } catch (e) {
@@ -33,7 +35,9 @@ const HomeController = {
     },
 
     add: (req, res, next) => {
-        res.render('home/create')
+        res.render('home/create', {
+            isLoggedIn: true
+        })
     },
 
     create: async (req, res, next) => {
@@ -59,6 +63,7 @@ const HomeController = {
         try {
             const home = await Home.findById(req.params.id)
             res.render('home/edit', {
+                isLoggedIn: true,
                 home: mongooseToObject(home)
             })
         } catch (e) {
@@ -136,7 +141,7 @@ const HomeController = {
                 await user.save()
             }
             home.phoneNumber = null
-            
+
             await home.save()
             res.redirect('/home/home-details/' + homeId)
         } catch (e) {

@@ -12,6 +12,7 @@ const UserController = {
                 .sort({ role: -1, name: 1 })
             // res.status(200).json(users)
             res.render('user/show-all', {
+                isLoggedIn: true,
                 users: multipleMongooseToObject(users)
             })
         } catch (e) {
@@ -23,6 +24,7 @@ const UserController = {
         try {
             const user = await User.findById(req.params.id)
             res.render('user/show', {
+                isLoggedIn: true,
                 user: mongooseToObject(user)
             })
         } catch (e) {
@@ -31,13 +33,16 @@ const UserController = {
     },
 
     add: (req, res, next) => {
-        res.render('user/register')
+        res.render('user/register', {
+            isLoggedIn: true
+        })
     },
 
     edit: async (req, res, next) => {
         try {
             const user = await User.findById(req.params.id)
             res.render('user/edit', {
+                isLoggedIn: true,
                 user: mongooseToObject(user)
             })
         } catch (e) {
@@ -49,9 +54,9 @@ const UserController = {
         try {
             const user = await User.findById(req.params.id)
             let password = user.password
-            // Đã đổi mật khẩu vì mật khẩu cũ sau khi mã hoá có độ dài > 20
-            // mật khẩu chưa mã hoá có độ dài từ 6 đến 20 ký tự
-            if (password.length < 20) {
+            // Đã đổi mật khẩu vì mật khẩu cũ sau khi mã hoá có độ dài >= 16
+            // mật khẩu chưa mã hoá có độ dài từ 6 đến 15 ký tự
+            if (password.length < 16) {
                 const salt = await bcrypt.genSalt(10)
                 const hashed = await bcrypt.hash(password, salt)
                 await User.updateOne({ _id: req.params.id }, { ...req.body, password: hashed })
