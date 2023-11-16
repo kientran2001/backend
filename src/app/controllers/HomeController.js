@@ -13,8 +13,8 @@ const HomeController = {
             // res.status(200).json(homes)
             res.render('home/show-all', {
                 isLoggedIn: true,
-                homes: multipleMongooseToObject(homes),
-
+                admin: req.admin,
+                homes: multipleMongooseToObject(homes)
             })
         } catch (e) {
             res.status(500).json(e)
@@ -27,6 +27,7 @@ const HomeController = {
             // res.status(200).json(home)
             res.render('home/show', {
                 isLoggedIn: true,
+                admin: req.admin,
                 home: mongooseToObject(home)
             })
         } catch (e) {
@@ -36,7 +37,8 @@ const HomeController = {
 
     add: (req, res, next) => {
         res.render('home/create', {
-            isLoggedIn: true
+            isLoggedIn: true,
+            admin: req.admin
         })
     },
 
@@ -64,6 +66,7 @@ const HomeController = {
             const home = await Home.findById(req.params.id)
             res.render('home/edit', {
                 isLoggedIn: true,
+                admin: req.admin,
                 home: mongooseToObject(home)
             })
         } catch (e) {

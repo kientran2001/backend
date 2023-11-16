@@ -22,6 +22,7 @@ const WaterMeterController = {
             // res.status(200).json(waterMeter)
             res.render('waterMeter/show', {
                 isLoggedIn: true,
+                admin: req.admin,
                 waterMeter: mongooseToObject(waterMeter)
             })
         } catch (e) {
@@ -34,6 +35,7 @@ const WaterMeterController = {
             const homeId = req.params.homeId
             res.render('waterMeter/create', {
                 isLoggedIn: true,
+                admin: req.admin,
                 homeId: homeId
             })
         } catch (e) {

@@ -1,17 +1,17 @@
 const express = require('express')
 const router = express.Router()
-
+const { verifyToken, verifyStaffAuth, verifyAdminAuth } = require('../app/controllers/MiddlewareController')
 const userController = require('../app/controllers/UserController')
 
-router.get('/', userController.showAll)
+router.get('/', verifyToken, userController.showAll)
 
-router.get('/add', userController.add)
-router.get('/:id', userController.show)
+router.get('/add', verifyToken, userController.add)
+router.get('/:id', verifyToken, userController.show)
 
-router.get('/:id/edit', userController.edit)
-router.put('/:id/update', userController.update)
+router.get('/:id/edit', verifyToken, userController.edit)
+router.put('/:id/update', verifyToken, userController.update)
 
-router.delete('/:id', userController.delete)
-router.get('/homes-of-user/:id', userController.homesOfUser)
+router.delete('/:id', verifyToken, userController.delete)
+router.get('/homes-of-user/:id', verifyToken, userController.homesOfUser)
 
 module.exports = router

@@ -13,6 +13,7 @@ const UserController = {
             // res.status(200).json(users)
             res.render('user/show-all', {
                 isLoggedIn: true,
+                admin: req.admin,
                 users: multipleMongooseToObject(users)
             })
         } catch (e) {
@@ -25,6 +26,7 @@ const UserController = {
             const user = await User.findById(req.params.id)
             res.render('user/show', {
                 isLoggedIn: true,
+                admin: req.admin,
                 user: mongooseToObject(user)
             })
         } catch (e) {
@@ -34,7 +36,8 @@ const UserController = {
 
     add: (req, res, next) => {
         res.render('user/register', {
-            isLoggedIn: true
+            isLoggedIn: true,
+            admin: req.admin
         })
     },
 
@@ -43,6 +46,7 @@ const UserController = {
             const user = await User.findById(req.params.id)
             res.render('user/edit', {
                 isLoggedIn: true,
+                admin: req.admin,
                 user: mongooseToObject(user)
             })
         } catch (e) {

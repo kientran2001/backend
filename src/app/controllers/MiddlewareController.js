@@ -1,17 +1,20 @@
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 module.exports = {
     //verifyToken
-    verifyToken: (req, res, next) => {
+    verifyToken: async (req, res, next) => {
         const accessToken = req.cookies.accessToken
         if (accessToken) {
             // bearer token
-            // const accessToken = token.split(" ")[1];
+            // const accessToken = token.split(" ")[0];
+
             jwt.verify(accessToken, process.env.JWT_ACCESS_KEY, (err, user) => {
                 if (err) {
                     return res.status(403).json("Token is not valid");
                 }
-                req.user = user;
+                req.admin = user;
+                req.accessToken = accessToken
                 next();
             });
         } else {

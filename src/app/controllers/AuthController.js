@@ -1,6 +1,8 @@
 const User = require('../model/User')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+require("dotenv").config();
+
 const { multipleMongooseToObject, mongooseToObject } = require('../../utils/mongoose')
 
 const AuthController = {
@@ -36,7 +38,7 @@ const AuthController = {
                 email: user.email,
                 role: user.role
             },
-            process.env.JWT_ACESS_TOKEN,
+            process.env.JWT_ACCESS_KEY,
             { expiresIn: "1d" }
         )
     },
