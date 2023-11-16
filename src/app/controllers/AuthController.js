@@ -71,7 +71,7 @@ const AuthController = {
                     req.session.user = user
                     req.session.save(function (err) {
                         if (err) return res.status(404).json(err)
-                        res.redirect('/')
+                        return res.redirect('/')
                     })
                 })
             } else {
