@@ -43,6 +43,12 @@ const AuthController = {
         )
     },
 
+    login: (req, res) => {
+        return res.render('login', {
+            isLoggedIn: false
+        })
+    },
+
     loginUser: async (req, res, next) => {
         try {
             const user = await User.findOne({ phoneNumber: req.body.phoneNumber })
@@ -71,7 +77,7 @@ const AuthController = {
                     req.session.user = user
                     req.session.save(function (err) {
                         if (err) return res.status(404).json(err)
-                        return res.redirect('/')
+                        return res.redirect('/homePage')
                     })
                 })
             } else {

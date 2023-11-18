@@ -4,8 +4,11 @@ const { verifyToken, verifyStaffAuth, verifyAdminAuth } = require('../app/contro
 const authController = require('../app/controllers/AuthController')
 
 
-router.post('/register', verifyToken, authController.registerUser)
+router.get('/login', authController.login)
 router.post('/login', authController.loginUser)
+
+router.post('/register', verifyToken, authController.registerUser)
+
 router.get('/logout', authController.logOut)
 
 module.exports = router

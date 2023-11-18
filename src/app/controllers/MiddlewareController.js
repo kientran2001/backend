@@ -18,7 +18,10 @@ module.exports = {
                 next();
             });
         } else {
-            res.status(401).json("You're not authenticated");
+            // res.status(401).json("You're not authenticated");
+            res.render('login', {
+                isLoggedIn: false
+            })
         }
     },
 
