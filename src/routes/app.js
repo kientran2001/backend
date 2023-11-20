@@ -9,4 +9,8 @@ router.get('/hello', (req, res) => {
 router.post('/loginApp', appController.loginApp)
 // router.get('/logout', appController.logOut)
 
+router.get('/recentRecord/:waterMeterId', appController.recentRecord)
+
+router.post('/addRecord', appController.addRecord)
+
 module.exports = router

@@ -98,10 +98,8 @@ const AuthController = {
             if (err) {
                 return res.status(500).json(err);
             }
-            // res.status(200).json("Logged out successfully!");
             res.redirect('/')
         });
-        // res.status(200).json("Logged out successfully!");
     }
 }
 

@@ -7,8 +7,9 @@ const Schema = mongoose.Schema;
 const Statistic = new Schema(
     {
         waterMeterId: {
-            type: Schema.Types.ObjectId,
-            ref: "WaterMeter"
+            type: String,
+            unique: false
+            // ref: "WaterMeter"
         },
         value: {
             type: Number,
