@@ -1,15 +1,48 @@
-<h1>Home Page</h1>
+<div class="mt-4" style="color: forestgreen;">
+    <h2>Thống kê</h2>
+</div>
 
-{{!-- <table class="table mt-4 ms-4">
+<table class="table mt-4">
+    <thead>
+        <tr>
+            <th scope="col">STT</th>
+            <th scope="col">SĐT chủ hộ</th>
+            <th scope="col">Toà nhà</th>
+            <th scope="col">Số nhà</th>
+            <th scope="col">Địa chỉ</th>
+            <th scope="col">Chỉ số h.tại</th>
+            <th scope="col">Ngày ghi nhận</th>
+            <th scope="col">Chỉ số trước</th>
+            <th scope="col">Ngày ghi nhận</th>
+            <th scope="col">Tiêu thụ</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+
     <tbody>
+        {{#each results}}
         <tr>
-            <th class="col-md-2" scope="row">ID</th>
-            <td class="col-md-6">ID</td>
+            <th scope="row">{{sum @index 1}}</th>
+            <td>{{this.phoneNumber}}</td>
+            <td>{{this.building}}</td>
+            <td>{{this.code}}</td>
+            <td>{{this.address}}</td>
+            <td>{{this.firstValue}}</td>
+            <td>{{this.firstDate}}</td>
+            <td>{{this.secondValue}}</td>
+            <td>{{this.secondDate}}</td>
+            <td>{{this.consumption}}</td>
+            <td>
+                <a href="#" class="btn btn-info">Thông tin</a>
+            </td>
         </tr>
 
+        {{else}}
         <tr>
-            <th class="col-md-2" scope="row">Tên</th>
-            <td class="col-md-6">Name</td>
+            <td colspan="5" class="text-center">
+                Hệ thống chưa có số liệu
+            </td>
         </tr>
+        {{/each}}
     </tbody>
-</table> --}}
+</table>

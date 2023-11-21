@@ -10,23 +10,12 @@ const { verifyToken, verifyStaffAuth, verifyAdminAuth } = require('../app/contro
 const { loginUser } = require('../app/controllers/AuthController')
 
 function route(app) {
-    // function isAuthenticated(req, res, next) {
-    //     if (req.session.user) next()
-    //     else res.render('login', {
-    //         isLoggedIn: false
-    //     })
-    // }
+
     app.use('/app', appRouter)
     app.get('/', (req, res) => {
         res.redirect('/auth/login')
     })
 
-    app.get('/homePage', verifyToken, (req, res, next) => {
-        res.render('home-page', {
-            isLoggedIn: true,
-            admin: req.admin,
-        })
-    })
     app.use('/auth', authRouter)
     app.use('/user', userRouter)
     app.use('/home', homeRouter)

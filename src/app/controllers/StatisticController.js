@@ -4,60 +4,10 @@ const User = require("../model/User");
 const Home = require("../model/Home");
 const WaterMeter = require("../model/WaterMeter");
 const Statistic = require("../model/Statistic");
+const { mongooseToObject, multipleMongooseToObject } = require('../../utils/mongoose');
 
 
 const StatisticController = {
-    allLastStatistics: async (req, res, next) => {
-        try {
-            const latestStatistics = await Statistic.aggregate([
-                {
-                    $sort: { date: -1 } // Sắp xếp theo ngày giảm dần
-                },
-                {
-                    $group: {
-                        _id: "$waterMeterId", // Nhóm theo waterMeterId
-                        latestStatistic: { $first: "$$ROOT" } // Lấy bản ghi đầu tiên của mỗi nhóm (bản ghi gần nhất)
-                    }
-                },
-                {
-                    $replaceRoot: { newRoot: "$latestStatistic" } // Làm mới cấu trúc để lấy các trường của bản ghi gần nhất
-                }
-            ]);
-            res.status(200).json(latestStatistics)
-        } catch (e) {
-            res.status(200).json(e)
-        }
-
-        res.status(200).json(latestStatistics)
-    },
-
-    twoLastStatistic: async (req, res, next) => {
-        try {
-            const twoLatestStatistics = await Statistic.aggregate([
-                {
-                    $sort: { waterMeterId: 1, date: -1 } // Sắp xếp theo waterMeterId tăng dần và theo ngày giảm dần
-                },
-                {
-                    $group: {
-                        _id: "$waterMeterId", // Nhóm theo waterMeterId
-                        latestStatistics: { $push: "$$ROOT" } // Đưa tất cả các bản ghi vào một mảng
-                    }
-                },
-                {
-                    $project: {
-                        latestStatistics: { $slice: ["$latestStatistics", 2] } // Chọn 2 bản ghi đầu tiên của mảng
-                    }
-                },
-                {
-                    $unwind: "$latestStatistics" // Mở rộng mảng thành các bản ghi riêng lẻ
-                }
-            ]);
-            res.status(200).json(twoLatestStatistics)
-        } catch (e) {
-            res.status(500).json(e)
-        }
-    },
-
     calculateConsumption: async (req, res, next) => {
         try {
             const result = await Statistic.aggregate([
@@ -67,7 +17,13 @@ const StatisticController = {
                 {
                     $group: {
                         _id: "$waterMeterId", // Nhóm theo waterMeterId
-                        latestStatistics: { $push: "$$ROOT" } // Đưa tất cả các bản ghi vào một mảng
+                        // latestStatistics: { $push: "$$ROOT" } 
+                        latestStatistics: {
+                            $push: {
+                                value: "$value",
+                                date: "$date" // Thêm date vào mảng
+                            }
+                        }
                     }
                 },
                 {
@@ -83,7 +39,8 @@ const StatisticController = {
                         _id: "$_id",
                         firstValue: { $first: "$latestStatistics.value" }, // Giá trị của bản ghi gần nhất
                         secondValue: { $last: "$latestStatistics.value" }, // Giá trị của bản ghi thứ hai gần nhất
-                        latestDate: { $first: "$latestStatistics.date" } // Ngày của bản ghi gần nhất
+                        firstDate: { $first: "$latestStatistics.date" }, // Lấy ngày tương ứng với firstValue
+                        secondDate: { $last: "$latestStatistics.date" }
                     }
                 },
                 {
@@ -91,35 +48,39 @@ const StatisticController = {
                         waterMeterId: "$_id",
                         firstValue: 1,
                         secondValue: 1,
-                        consumption: { $subtract: ["$firstValue", "$secondValue"] }, // Tính hiệu số
-                        latestDate: 1
+                        firstDate: 1,
+                        secondDate: 1,
+                        consumption: { $subtract: ["$firstValue", "$secondValue"] }
                     }
                 }
             ]);
 
-            res.status(200).json(result)
+            for (const record of result) {
+                record.firstDate = record.firstDate.toLocaleString('en-GB')
+                record.secondDate = record.secondDate.toLocaleString('en-GB')
+                const waterMeterId = record.waterMeterId;
+                const waterMeter = await WaterMeter.findById(waterMeterId)
+
+                if (waterMeter) {
+                    const home = await Home.findById(waterMeter.homeId)
+
+                    // Thêm thông tin từ model Home vào kết quả
+                    record.building = home.building;
+                    record.code = home.code;
+                    record.address = home.address;
+                    record.phoneNumber = home.phoneNumber;
+                }
+            }
+
+            // res.status(200).json(result);
+            res.render('home-page', {
+                isLoggedIn: true,
+                admin: req.admin,
+                results: multipleMongooseToObject(result)
+            })
         } catch (e) {
             console.error(e);
             res.status(500).json(e)
-        }
-    },
-
-    recentStatistic: async (waterMeterId) => {
-        try {
-            const waterMeter = await WaterMeter.findById(waterMeterId);
-            if (!waterMeter) {
-                return res.status(404).json({ error: 'WaterMeter not found' });
-            }
-
-            const recentStatistic = await Statistic
-                .find({ waterMeterId: waterMeterId })
-                .sort({ currentDate: -1 })
-                .limit(1)
-
-            return recentStatistic
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: 'Internal Server Error' });
         }
     },
 

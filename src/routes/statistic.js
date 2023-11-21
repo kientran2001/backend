@@ -2,10 +2,10 @@ const express = require('express')
 const router = express.Router()
 
 const statisticController = require('../app/controllers/StatisticController')
+const { verifyToken } = require('../app/controllers/MiddlewareController')
 
-router.get('/all', statisticController.allLastStatistics)
-router.get('/twoLastStatistic', statisticController.twoLastStatistic)
-router.get('/calculateConsumption', statisticController.calculateConsumption)
+
+router.get('/consumption', verifyToken, statisticController.calculateConsumption)
 
 router.post('/create', statisticController.create)
 
