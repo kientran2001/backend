@@ -21,7 +21,11 @@ const Statistic = new Schema(
             required: true,
             default: new Date
         },
-        recorder: {
+        recorderName: {
+            type: String,
+            unique: false
+        },
+        recorderPhone: {
             type: Number,
             unique: false
         }
@@ -31,11 +35,5 @@ const Statistic = new Schema(
     }
 );
 
-// Add plugins
-// mongoose.plugin(slug);
-// Statistic.plugin(mongooseDelete, {
-//     deletedAt: true,
-//     overrideMethods: "all",
-// });
 
 module.exports = mongoose.model("Statistic", Statistic);

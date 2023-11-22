@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const moment = require("moment");
 
 const User = require("../model/User");
 const Home = require("../model/Home");
@@ -56,19 +57,21 @@ const StatisticController = {
             ]);
 
             for (const record of result) {
-                record.firstDate = record.firstDate.toLocaleString('en-GB')
-                record.secondDate = record.secondDate.toLocaleString('en-GB')
+                record.firstDate = record.firstDate.toLocaleDateString('en-GB')
+                record.secondDate = record.secondDate.toLocaleDateString('en-GB')
                 const waterMeterId = record.waterMeterId;
                 const waterMeter = await WaterMeter.findById(waterMeterId)
 
                 if (waterMeter) {
                     const home = await Home.findById(waterMeter.homeId)
+                    const user = await User.findOne({ phoneNumber: home.phoneNumber})
 
                     // Thêm thông tin từ model Home vào kết quả
                     record.building = home.building;
                     record.code = home.code;
                     record.address = home.address;
                     record.phoneNumber = home.phoneNumber;
+                    record.username = user.name
                 }
             }
 
@@ -80,6 +83,38 @@ const StatisticController = {
             })
         } catch (e) {
             console.error(e);
+            res.status(500).json(e)
+        }
+    },
+
+    allRecords: async (req, res, next) => {
+        try {
+            const waterMeterId = req.params.waterMeterId
+            const statistic = await Statistic.find({ waterMeterId: waterMeterId }).sort({ date: -1 })
+            const waterMeter = await WaterMeter.findById(waterMeterId)
+            const home = await Home.findById(waterMeter.homeId)
+            const user = await User.findOne({ phoneNumber: home.phoneNumber })
+
+            for (const record of statistic) {
+                record.date = moment(record.date).format('YYYY-MM-DD')
+            }
+
+            const homeInfo = {
+                username: user.name,
+                userPhone: home.phoneNumber,
+                building: home.building,
+                code: home.code,
+                address: home.address
+            }
+
+
+            res.render('statistic/show', {
+                isLoggedIn: true,
+                admin: req.admin,
+                homeInfo: mongooseToObject(homeInfo),
+                statistic: multipleMongooseToObject(statistic)
+            })
+        } catch (e) {
             res.status(500).json(e)
         }
     },

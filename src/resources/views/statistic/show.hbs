@@ -1,0 +1,56 @@
+<div class="mt-4">
+    <a href="/statistic/consumption" class="btn btn-primary">Quay lại</a>
+    <h3 class="mt-3">Chỉ số các tháng của đồng hồ</h3>
+</div>
+
+<table class="table mt-4">
+    <thead>
+        <tr>
+            <th scope="col">Chủ căn hộ</th>
+            <th scope="col">SĐT</th>
+            <th scope="col">Toà nhà</th>
+            <th scope="col">Số nhà</th>
+            <th scope="col">Địa chỉ</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td>{{homeInfo.username}}</td>
+            <td>{{homeInfo.userPhone}}</td>
+            <td>{{homeInfo.building}}</td>
+            <td>{{homeInfo.code}}</td>
+            <td>{{homeInfo.address}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="table mt-4">
+    <thead>
+        <tr>
+            <th scope="col">STT</th>
+            <th scope="col">Chỉ số</th>
+            <th scope="col">Người ghi nhận</th>
+            <th scope="col">SĐT người ghi</th>
+            <th scope="col">Ngày ghi nhận</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {{#each statistic}}
+        <tr>
+            <th scope="row">{{sum @index 1}}</th>
+            <td>{{this.value}}</td>
+            <td>{{this.recorderName}}</td>
+            <td>{{this.recorderPhone}}</td>
+            <td>{{this.date}}</td>
+        </tr>
+        {{else}}
+        <tr>
+            <td colspan="5" class="text-center">
+                Hệ thống chưa có số liệu
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>

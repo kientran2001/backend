@@ -76,7 +76,8 @@ const AppController = {
                 waterMeterId: waterMeterId,
                 value: req.body.value,
                 date: req.body.date,
-                recorder: req.body.recorder
+                recorderName: req.body.recorderName,
+                recorderPhone: req.body.recorderPhone
             })
 
             await record.save()

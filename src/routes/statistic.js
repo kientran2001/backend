@@ -7,6 +7,8 @@ const { verifyToken } = require('../app/controllers/MiddlewareController')
 
 router.get('/consumption', verifyToken, statisticController.calculateConsumption)
 
+router.get('/:waterMeterId/records', verifyToken, statisticController.allRecords)
+
 router.post('/create', statisticController.create)
 
 router.get('/statistic-of-home/:homeId', statisticController.statisticOfHome)

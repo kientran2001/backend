@@ -19,7 +19,6 @@ const WaterMeterController = {
     show: async (req, res, next) => {
         try {
             const waterMeter = await WaterMeter.findById(req.params.id)
-            // res.status(200).json(waterMeter)
             res.render('waterMeter/show', {
                 isLoggedIn: true,
                 admin: req.admin,
