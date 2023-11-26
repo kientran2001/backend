@@ -12,8 +12,8 @@ const { loginUser } = require('../app/controllers/AuthController')
 function route(app) {
 
     app.use('/app', appRouter)
-    app.get('/', (req, res) => {
-        res.redirect('/auth/login')
+    app.get('/', verifyToken, (req, res) => {
+        res.redirect('/statistic/consumption')
     })
 
     app.use('/auth', authRouter)

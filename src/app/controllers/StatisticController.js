@@ -95,9 +95,17 @@ const StatisticController = {
             const home = await Home.findById(waterMeter.homeId)
             const user = await User.findOne({ phoneNumber: home.phoneNumber })
 
-            for (const record of statistic) {
-                record.date = moment(record.date).format('YYYY-MM-DD')
-            }
+            let statisticArr = []
+            statistic.forEach(record => {
+                record = {
+                    waterMeterId: record.waterMeterId,
+                    value: record.value,
+                    date: moment(record.date).format('DD-MM-YYYY'),
+                    recorderName: record.recorderName,
+                    recorderPhone: record.recorderPhone
+                }
+                statisticArr.push(record)
+            });
 
             const homeInfo = {
                 username: user.name,
@@ -112,7 +120,7 @@ const StatisticController = {
                 isLoggedIn: true,
                 admin: req.admin,
                 homeInfo: mongooseToObject(homeInfo),
-                statistic: multipleMongooseToObject(statistic)
+                statistic: multipleMongooseToObject(statisticArr)
             })
         } catch (e) {
             res.status(500).json(e)

@@ -75,7 +75,7 @@ const AppController = {
             const record = new Statistic({
                 waterMeterId: waterMeterId,
                 value: req.body.value,
-                date: req.body.date,
+                date: req.body.date || new Date(),
                 recorderName: req.body.recorderName,
                 recorderPhone: req.body.recorderPhone
             })

@@ -1,8 +1,10 @@
+const QR = require('qrcode')
+const moment = require('moment')
+
 const User = require("../model/User");
 const Home = require("../model/Home");
 const WaterMeter = require("../model/WaterMeter");
 const Statistic = require("../model/Statistic");
-const QR = require('qrcode')
 const { mongooseToObject, multipleMongooseToObject } = require('../../utils/mongoose');
 
 
@@ -19,10 +21,18 @@ const WaterMeterController = {
     show: async (req, res, next) => {
         try {
             const waterMeter = await WaterMeter.findById(req.params.id)
+            let data = {
+                _id: waterMeter._id,
+                code: waterMeter.code,
+                homeId: waterMeter.homeId,
+                dateInstallation: moment(waterMeter.dateInstallation).format('DD-MM-YYYY'),
+                qr: waterMeter.qr
+            }
+
             res.render('waterMeter/show', {
                 isLoggedIn: true,
                 admin: req.admin,
-                waterMeter: mongooseToObject(waterMeter)
+                waterMeter: mongooseToObject(data)
             })
         } catch (e) {
             res.status(500).json(e)
@@ -32,11 +42,16 @@ const WaterMeterController = {
     add: async (req, res, next) => {
         try {
             const homeId = req.params.homeId
-            res.render('waterMeter/create', {
-                isLoggedIn: true,
-                admin: req.admin,
-                homeId: homeId
-            })
+            const home = await Home.findById(homeId)
+            if (home.waterMeterId != null) {
+                return res.status(403).send(`<h1>Căn hộ này đã có đồng hồ</h1>`)
+            } else {
+                res.render('waterMeter/create', {
+                    isLoggedIn: true,
+                    admin: req.admin,
+                    homeId: homeId
+                })
+            }
         } catch (e) {
             res.status(500).json(e)
         }

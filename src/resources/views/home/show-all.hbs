@@ -1,5 +1,7 @@
 <div class="mt-4" style="color: forestgreen;">
     <h2>Thông tin các căn hộ</h2>
+    <input type="text" class="form-control" id="searchPhoneNumber"
+        placeholder="Nhập SĐT để tìm kiếm (Không nhập chữ số 0 ở đầu SĐT)">
 </div>
 
 <table class="table mt-4">
@@ -79,4 +81,21 @@
             deleteForm.submit()
         }
     })
+
+    var searchPhoneNumberInput = document.getElementById('searchPhoneNumber');
+    searchPhoneNumberInput.addEventListener('input', function () {
+        var filter = this.value.toUpperCase();
+        var table = document.querySelector('.table');
+        var rows = table.querySelectorAll('tbody tr');
+
+        rows.forEach(function (row) {
+            var phoneNumber = row.querySelector('td:nth-child(2)').textContent || row.querySelector('td:nth-child(2)').innerText;
+
+            if (phoneNumber.toUpperCase().indexOf(filter) > -1) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
 </script>

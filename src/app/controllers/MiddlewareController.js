@@ -11,7 +11,8 @@ module.exports = {
 
             jwt.verify(accessToken, process.env.JWT_ACCESS_KEY, (err, user) => {
                 if (err) {
-                    return res.status(403).json("Token is not valid");
+                    // return res.status(403).json("Token is not valid");
+                    return res.redirect('/auth/login')
                 }
                 req.admin = user;
                 req.accessToken = accessToken
@@ -22,7 +23,7 @@ module.exports = {
             // res.render('login', {
             //     isLoggedIn: false
             // })
-            res.redirect('/')
+            res.redirect('/auth/login')
         }
     },
 

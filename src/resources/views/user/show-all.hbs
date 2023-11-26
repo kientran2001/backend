@@ -1,5 +1,7 @@
 <div class="mt-4" style="color: forestgreen;">
     <h2>Thông tin tài khoản người dùng</h2>
+    <input type="text" id="searchInput" class="form-control mt-3"
+        placeholder="Nhập SĐT để tìm kiếm (Không nhập chữ số 0 ở đầu SĐT)">
 </div>
 
 <table class="table mt-4">
@@ -81,4 +83,23 @@
             deleteForm.submit()
         }
     })
+
+    // Thêm sự kiện lắng nghe cho ô tìm kiếm
+    var searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', function () {
+        var filter = this.value.toUpperCase();
+        var table = document.querySelector('.table');
+        var rows = table.querySelectorAll('tbody tr');
+
+        // Lặp qua các dòng và ẩn/hiện dựa trên kết quả tìm kiếm
+        rows.forEach(function (row) {
+            var phoneNumber = row.querySelector('td:nth-child(3)').textContent || row.querySelector('td:nth-child(3)').innerText;
+
+            if (phoneNumber.toUpperCase().indexOf(filter) > -1) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
 </script>

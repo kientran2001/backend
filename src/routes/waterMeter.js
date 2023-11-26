@@ -3,7 +3,8 @@ const router = express.Router()
 const { verifyToken, verifyStaffAuth, verifyAdminAuth } = require('../app/controllers/MiddlewareController')
 const waterMeterController = require('../app/controllers/WaterMeterController')
 
-router.get('/', verifyToken, waterMeterController.showAll)
+router.get('/all', verifyToken, waterMeterController.showAll)
+router.get('/', verifyToken, (req, res) => { return res.send(`<h1>Chưa có thông tin đồng hồ</h1>`)})
 router.get('/:id', verifyToken, waterMeterController.show)
 
 router.get('/home/:homeId/addWaterMeter', verifyToken, waterMeterController.add)
