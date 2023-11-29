@@ -3,12 +3,12 @@
 	<form method="post" action="/auth/register">
 		<div class="mb-3">
 			<label for="name" class="form-label">Tên người dùng*</label>
-			<input type="text" class="form-control" id="name" name="name" autofocus>
+			<input type="text" class="form-control" id="name" name="name" minlength="1" autofocus>
 		</div>
 
 		<div class="mb-3">
 			<label for="phoneNumber" class="form-label">Số điện thoại*</label>
-			<input type="number" class="form-control" id="phoneNumber" name="phoneNumber">
+			<input type="number" class="form-control" id="phoneNumber" name="phoneNumber" minlength="9">
 		</div>
 
 		<div class="mb-3">

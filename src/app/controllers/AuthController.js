@@ -53,7 +53,11 @@ const AuthController = {
         try {
             const user = await User.findOne({ phoneNumber: req.body.phoneNumber })
             if (!user) {
-                res.status(404).json("Wrong phone number!")
+                return res.status(403).send(
+                    `<h1 style="margin:40px; color:red">Số điện thoại không chính xác!</h1>
+                    <a href="/auth/login" style="font-size:28px;text-decoration:none!important;margin-left:100px">
+                        Quay lại trang đăng nhập
+                    </a>`)
             }
 
             const validPassword = await bcrypt.compare(
@@ -61,7 +65,11 @@ const AuthController = {
                 user.password
             );
             if (!validPassword) {
-                return res.status(404).json("Wrong password");
+                return res.status(403).send(
+                    `<h1 style="margin:40px; color:red">Mật khẩu không chính xác!</h1>
+                    <a href="/auth/login" style="font-size:28px;text-decoration:none!important;margin-left:100px">
+                        Quay lại trang đăng nhập
+                    </a>`)
             }
 
             if (user.role === 3 && validPassword) {

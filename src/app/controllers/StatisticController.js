@@ -64,7 +64,7 @@ const StatisticController = {
 
                 if (waterMeter) {
                     const home = await Home.findById(waterMeter.homeId)
-                    const user = await User.findOne({ phoneNumber: home.phoneNumber})
+                    const user = await User.findOne({ phoneNumber: home.phoneNumber })
 
                     // Thêm thông tin từ model Home vào kết quả
                     record.building = home.building;
@@ -75,11 +75,16 @@ const StatisticController = {
                 }
             }
 
+            const sortedResult = result.sort((a, b) => {
+                if (a.address && b.address) {
+                    return a.address.localeCompare(b.address)
+                }
+            });
             // res.status(200).json(result);
             res.render('home-page', {
                 isLoggedIn: true,
                 admin: req.admin,
-                results: multipleMongooseToObject(result)
+                results: multipleMongooseToObject(sortedResult)
             })
         } catch (e) {
             console.error(e);
@@ -92,6 +97,9 @@ const StatisticController = {
             const waterMeterId = req.params.waterMeterId
             const statistic = await Statistic.find({ waterMeterId: waterMeterId }).sort({ date: -1 })
             const waterMeter = await WaterMeter.findById(waterMeterId)
+            if (!waterMeter) {
+                return res.status(404).send(`<h1 style="margin:40px; color:red">Đồng hồ đã bị xoá khỏi hệ thống</h1>`)
+            }
             const home = await Home.findById(waterMeter.homeId)
             const user = await User.findOne({ phoneNumber: home.phoneNumber })
 

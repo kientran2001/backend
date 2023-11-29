@@ -3,12 +3,12 @@
 	<form method="POST" action="/user/{{user._id}}/update?_method=PUT">
         <div class="mb-3">
 			<label for="name" class="form-label">Tên người dùng*</label>
-			<input type="text" class="form-control" value="{{user.name}}" id="name" name="name">
+			<input type="text" class="form-control" value="{{user.name}}" id="name" name="name" minlength="1">
 		</div>
 
 		<div class="mb-3">
 			<label for="phoneNumber" class="form-label">Số điện thoại*</label>
-			<input type="number" class="form-control" value="{{user.phoneNumber}}" id="phoneNumber" name="phoneNumber">
+			<input type="number" class="form-control" value="{{user.phoneNumber}}" id="phoneNumber" name="phoneNumber" minlength="9">
 		</div>
 
 		<div class="mb-3">
@@ -18,14 +18,14 @@
 
 		<div class="mb-3">
 			<label for="password" class="form-label">Password*</label>
-			<input type="password" class="form-control" value="{{user.password}}" id="password" name="password" minlength="6">
+			<input type="password" class="form-control" value="{{user.password}}" id="password" name="password" minlength="6" maxlength="15">
 		</div>
 
 		<div class="mb-3">
 			<label for="role" class="form-label">Role* (1: Người dùng, 2: Nhân viên, 3: Quản trị viên)</label>
 			{{!-- <input type="number" class="form-control" value="{{user.role}}" id="role" name="role" min="1" max="3"> --}}
 			<select name="role" id="role" class="form-select">
-				<option value="{{user.role}}" selected>Select one</option>
+				<option value="{{user.role}}" selected>Chọn 1 ô</option>
 				<option value="1">Người dùng</option>
 				<option value="2">Nhân viên</option>
 				<option value="3">Admin</option>

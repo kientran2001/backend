@@ -64,7 +64,7 @@
         rows.forEach(function (row) {
             var phoneNumber = row.querySelector('td:nth-child(3)').textContent || row.querySelector('td:nth-child(3)').innerText;
 
-            if (phoneNumber.toUpperCase().indexOf(filter) > -1) {
+            if (phoneNumber.toUpperCase().includes(filter)) {
                 row.style.display = '';
             } else {
                 row.style.display = 'none';

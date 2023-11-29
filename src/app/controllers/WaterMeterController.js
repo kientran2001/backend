@@ -44,7 +44,7 @@ const WaterMeterController = {
             const homeId = req.params.homeId
             const home = await Home.findById(homeId)
             if (home.waterMeterId != null) {
-                return res.status(403).send(`<h1>Căn hộ này đã có đồng hồ</h1>`)
+                return res.status(403).send(`<h1 style="margin:40px; color:red">Căn hộ này đã có đồng hồ</h1>`)
             } else {
                 res.render('waterMeter/create', {
                     isLoggedIn: true,

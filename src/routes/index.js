@@ -13,7 +13,7 @@ function route(app) {
 
     app.use('/app', appRouter)
     app.get('/', verifyToken, (req, res) => {
-        res.redirect('/statistic/consumption')
+        return res.redirect('/statistic/consumption')
     })
 
     app.use('/auth', authRouter)

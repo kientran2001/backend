@@ -3,22 +3,22 @@
 	<form method="post" action="/home/create">
 		<div class="mb-3">
 			<label for="building" class="form-label">Toà nhà *</label>
-			<input type="text" class="form-control" id="building" name="building">
+			<input type="text" class="form-control" id="building" name="building" minlength="1" autofocus>
 		</div>
 
 		<div class="mb-3">
 			<label for="code" class="form-label">Mã căn hộ/ Số phòng *</label>
-			<input type="text" class="form-control" id="code" name="code">
+			<input type="text" class="form-control" id="code" name="code" minlength="1">
 		</div>
 
 		<div class="mb-3">
 			<label for="address" class="form-label">Địa chỉ *</label>
-			<input type="text" class="form-control" id="address" name="address">
+			<input type="text" class="form-control" id="address" name="address" minlength="1">
 		</div>
 
 		<div class="mb-3">
 			<label for="phoneNumber" class="form-label">SĐT người dùng</label>
-			<input type="number" class="form-control" id="phoneNumber" name="phoneNumber">
+			<input type="number" class="form-control" id="phoneNumber" name="phoneNumber" minlength="9">
 		</div>
 
 		{{!-- <div class="mb-3">

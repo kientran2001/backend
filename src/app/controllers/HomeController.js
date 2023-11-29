@@ -51,7 +51,7 @@ const HomeController = {
                 user.homes.push(home._id)
                 await user.save()
             } else {
-                return res.status(404).send('User not found!')
+                return res.status(404).send(`<h1 style="margin:40px; color:red">Không có người dùng này trong hệ thống</h1>`)
             }
             home.waterMeterId = null
 
