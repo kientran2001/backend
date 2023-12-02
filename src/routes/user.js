@@ -12,6 +12,8 @@ router.get('/:id/edit', verifyToken, userController.edit)
 router.put('/:id/update', verifyToken, userController.update)
 
 router.delete('/:id', verifyToken, userController.delete)
-router.get('/homes-of-user/:id', verifyToken, userController.homesOfUser)
+
+// Các api chưa dùng đến
+// router.get('/homes-of-user/:id', verifyToken, userController.homesOfUser)
 
 module.exports = router

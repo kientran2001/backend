@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const slug = require("mongoose-slug-updater");
 const mongooseDelete = require("mongoose-delete");
 
 const Schema = mongoose.Schema;
@@ -12,7 +11,7 @@ const User = new Schema(
             required: true,
         },
         phoneNumber: {
-            type: Number,
+            type: String,
             required: true,
             unique: true
         },
@@ -40,8 +39,6 @@ const User = new Schema(
     }
 );
 
-// Add plugins
-mongoose.plugin(slug);
 User.plugin(mongooseDelete, {
     deletedAt: true,
     overrideMethods: "all",

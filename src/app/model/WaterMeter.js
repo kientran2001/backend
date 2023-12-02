@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const slug = require("mongoose-slug-updater");
 const mongooseDelete = require("mongoose-delete");
 
 const Schema = mongoose.Schema;
@@ -8,18 +7,14 @@ const WaterMeter = new Schema(
     {
         code: {
             type: String,
-            maxLength: 100,
-            unique: true,
-            required: true
+            maxLength: 100
         },
         homeId: {
             type: Schema.Types.ObjectId,
-            ref: 'Home',
-            unique: true
+            ref: 'Home'
         },
         dateInstallation: {
             type: Date,
-            required: true,
             default: new Date
         },
         qr: {
@@ -31,8 +26,6 @@ const WaterMeter = new Schema(
     }
 );
 
-// Add plugins
-mongoose.plugin(slug);
 WaterMeter.plugin(mongooseDelete, {
     deletedAt: true,
     overrideMethods: "all",

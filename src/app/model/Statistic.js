@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const slug = require("mongoose-slug-updater");
 const mongooseDelete = require("mongoose-delete");
 
 const Schema = mongoose.Schema;
@@ -9,7 +8,6 @@ const Statistic = new Schema(
         waterMeterId: {
             type: String,
             unique: false
-            // ref: "WaterMeter"
         },
         value: {
             type: Number,
@@ -26,8 +24,11 @@ const Statistic = new Schema(
             unique: false
         },
         recorderPhone: {
-            type: Number,
+            type: String,
             unique: false
+        },
+        image: {        // Ảnh chụp đồng hồ khi ghi nhận
+            type: String
         }
     },
     {

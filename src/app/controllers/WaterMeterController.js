@@ -105,6 +105,7 @@ const WaterMeterController = {
                 await home.save()
             }
 
+            await Statistic.deleteMany({ waterMeterId: req.params.id })
             await WaterMeter.deleteOne(waterMeter)
             // res.status(200).json("Deleted successfully");
             res.redirect('back')

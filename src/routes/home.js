@@ -18,7 +18,8 @@ router.delete('/:id', verifyToken, homeController.delete)
 router.delete('/:homeId/deletePhone', verifyToken, homeController.deletePhoneNumber)
 router.post('/:homeId/phone/:newPhoneNumber', verifyToken, homeController.addPhoneNumber)
 
-router.get('/user-of-home/:id', verifyToken, homeController.userOfHome)
-router.get('/waterMeter-of-home/:id', verifyToken, homeController.waterMeterOfHome)
+// Các api chưa dùng đến
+// router.get('/user-of-home/:id', verifyToken, homeController.userOfHome)
+// router.get('/waterMeter-of-home/:id', verifyToken, homeController.waterMeterOfHome)
 
 module.exports = router

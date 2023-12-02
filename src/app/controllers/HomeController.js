@@ -10,11 +10,30 @@ const HomeController = {
     showAll: async (req, res, next) => {
         try {
             const homes = await Home.find({}).sort({ address: 1 })
-            // res.status(200).json(homes)
+
+            let homeArr = []
+            for (const home of homes) {
+                const waterMeterId = home.waterMeterId
+                const waterMeter = await WaterMeter.findById(waterMeterId)
+                if (waterMeter) {
+                    const data = {
+                        _id: home._id,
+                        building: home.building,
+                        code: home.code,
+                        address: home.address,
+                        phoneNumber: home.phoneNumber,
+                        waterMeterId: home.waterMeterId,
+                        qr: waterMeter.qr
+                    }
+                    homeArr.push(data)
+                } else {
+                    homeArr.push(home)
+                }
+            }
             res.render('home/show-all', {
                 isLoggedIn: true,
                 admin: req.admin,
-                homes: multipleMongooseToObject(homes)
+                homes: multipleMongooseToObject(homeArr)
             })
         } catch (e) {
             res.status(500).json(e)
@@ -102,6 +121,8 @@ const HomeController = {
             if (waterMeterId) {
                 const waterMeter = await WaterMeter.findById(waterMeterId)
                 await WaterMeter.deleteOne(waterMeter)
+
+                await Statistic.deleteMany({ waterMeterId: waterMeterId })
             }
             await Home.deleteOne(home)
             // res.status(200).json("Deleted successfully!")

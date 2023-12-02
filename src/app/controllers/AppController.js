@@ -77,7 +77,8 @@ const AppController = {
                 value: req.body.value,
                 date: req.body.date || new Date(),
                 recorderName: req.body.recorderName,
-                recorderPhone: req.body.recorderPhone
+                recorderPhone: req.body.recorderPhone,
+                image: req.body.image
             })
 
             await record.save()

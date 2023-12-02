@@ -118,7 +118,7 @@
         var btnDeletePhone = document.getElementById('btn-delete-phone');
 
         btnDeletePhone.onclick = () => {
-            deleteForm.action = '/home/' + homeId +  '/deletePhone' + '?_method=delete'
+            deleteForm.action = '/home/' + homeId + '/deletePhone' + '?_method=delete'
             deleteForm.submit()
         }
     })
@@ -133,7 +133,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Bạn chắc chắn muốn xoá?</p>
+                <p>Hành động này sẽ xoá đồng hồ và các dữ liệu liên quan. Bạn chắc chắn muốn xoá?</p>
             </div>
             <div class="modal-footer">
                 <button id="btn-delete-waterMeter" type="button" class="btn btn-danger">Xoá bỏ</button>

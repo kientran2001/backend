@@ -10,20 +10,21 @@ const AuthController = {
         try {
             const salt = await bcrypt.genSalt(10)
             const hashed = await bcrypt.hash(req.body.password, salt)
+            const findUser = await User.findOne({ phoneNumber: req.body.phoneNumber })
+            if (findUser) {
+                return res.status(403).send(
+                    `<h1 style="margin:40px; color:red">Người dùng đã tồn tại trong hệ thống!</h1>`
+                )
+            }
 
             // Create new user
             const newUser = new User({
-                // name: req.body.name,
-                // phoneNumber: req.body.phoneNumber,
-                // email: req.body.email,
                 ...req.body,
                 password: hashed
-                // role: req.body.role
             })
-
-            const user = await newUser.save()
+            await newUser.save()
             // res.status(200).json(user)
-            res.redirect('/user')
+            return res.redirect('/user')
         } catch (err) {
             res.status(500).json(err);
         }

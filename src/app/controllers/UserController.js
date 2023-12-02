@@ -24,10 +24,13 @@ const UserController = {
     show: async (req, res, next) => {
         try {
             const user = await User.findById(req.params.id)
+            const homes = await Home.find({ '_id': { $in: [user.homes] } })
+            
             res.render('user/show', {
                 isLoggedIn: true,
                 admin: req.admin,
-                user: mongooseToObject(user)
+                user: mongooseToObject(user),
+                homes: multipleMongooseToObject(homes)
             })
         } catch (e) {
             res.status(500).json(e)

@@ -1,7 +1,6 @@
 <div class="mt-4" style="color: forestgreen;">
     <h2>Thông tin các căn hộ</h2>
-    <input type="text" class="form-control" id="searchPhoneNumber"
-        placeholder="Nhập SĐT để tìm kiếm (Không nhập chữ số 0 ở đầu SĐT)">
+    <input type="text" class="form-control" id="searchPhoneNumber" placeholder="Nhập SĐT để tìm kiếm">
 </div>
 
 <table class="table mt-4">
@@ -10,7 +9,7 @@
             <th scope="col">STT</th>
             <th scope="col">SĐT người đại diện</th>
             <th scope="col">Toà nhà</th>
-            <th scope="col">Mã căn hộ/ Số phòng</th>
+            <th scope="col">Mã căn hộ/ Số nhà</th>
             <th scope="col">Địa chỉ</th>
             <th scope="col">Đồng hồ</th>
             <th scope="col">Action</th>
@@ -25,7 +24,7 @@
             <td>{{this.building}}</td>
             <td>{{this.code}}</td>
             <td>{{this.address}}</td>
-            <td>{{this.waterMeterId}}</td>
+            <td><img class="w-25 h-25" src="{{this.qr}}" alt="Chưa có"></td>
             <td>
                 <a href="/home/home-details/{{this._id}}" class="btn btn-info">Thông tin</a>
                 <a href="/home/{{this._id}}/edit" class="ms-1 btn btn-warning">Sửa</a>
@@ -53,7 +52,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>Bạn chắc chắn muốn xoá căn hộ này?</p>
+                <p>Hành động này sẽ xoá căn hộ và các dữ liệu liên quan đến người dùng, đồng hồ. Bạn chắc chắn muốn xoá?
+                </p>
             </div>
             <div class="modal-footer">
                 <button id="btn-delete-home" type="button" class="btn btn-danger">Xoá bỏ</button>

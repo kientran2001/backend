@@ -1,6 +1,6 @@
 <div class="mt-4"></div>
-    <a href="/user" class="btn btn-primary">Quay lại</a>
-    <h3 class="mt-3">Thông tin chi tiết người dùng</h3>
+<a href="/user" class="btn btn-primary">Quay lại</a>
+<h3 class="mt-3">Thông tin chi tiết người dùng</h3>
 <div class="mt-4"></div>
 <table class="table mt-4 ms-4">
     <tbody>
@@ -23,10 +23,12 @@
         <tr>
             <th class="col-md-2" scope="row">ID căn hộ</th>
             <td class="col-md-6">
-                {{#each user.homes}}
+                {{#each homes}}
                 <ul>
-                    <li>{{this}}</li>
+                    <li>Đ/c: {{this.address}} - Toà nhà: {{this.building}} - Số nhà: {{this.code}}</li>
                 </ul>
+                {{else}}
+                <p>Người dùng này hiện chưa sở hữu căn hộ trong hệ thống</p>
                 {{/each}}
             </td>
         </tr>

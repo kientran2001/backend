@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const slug = require("mongoose-slug-updater");
 const mongooseDelete = require("mongoose-delete");
 
 const Schema = mongoose.Schema;
@@ -19,14 +18,12 @@ const Home = new Schema(
             required: true
         },
         phoneNumber: {
-            type: Number,
-            // ref: "User",
+            type: String,
             unique: false
         },
         waterMeterId: {
             type: Schema.Types.ObjectId,
             ref: "WaterMeter"
-            // default: null
         }
     },
     {
@@ -34,8 +31,6 @@ const Home = new Schema(
     }
 );
 
-// Add plugins
-mongoose.plugin(slug);
 Home.plugin(mongooseDelete, {
     deletedAt: true,
     overrideMethods: "all",

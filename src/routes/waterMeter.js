@@ -13,6 +13,8 @@ router.post('/create', verifyToken, waterMeterController.create)
 router.put('/:id', verifyToken, waterMeterController.update)
 
 router.delete('/:id', verifyToken, waterMeterController.delete)
-router.get('/:id/home', verifyToken, waterMeterController.homeOfWaterMeter)
+
+// Các api chưa dùng đến
+// router.get('/:id/home', waterMeterController.homeOfWaterMeter)
 
 module.exports = router
