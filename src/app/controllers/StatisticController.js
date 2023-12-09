@@ -13,7 +13,7 @@ const StatisticController = {
         try {
             const result = await Statistic.aggregate([
                 {
-                    $sort: { waterMeterId: 1, date: -1 } // Sắp xếp theo waterMeterId tăng dần và theo date giảm dần
+                    $sort: { waterMeterId: 1, date: -1, createdAt: -1 } // Sắp xếp theo waterMeterId tăng dần và theo date giảm dần
                 },
                 {
                     $group: {
@@ -106,11 +106,13 @@ const StatisticController = {
             let statisticArr = []
             statistic.forEach(record => {
                 record = {
+                    _id: record._id,
                     waterMeterId: record.waterMeterId,
                     value: record.value,
                     date: moment(record.date).format('DD-MM-YYYY'),
                     recorderName: record.recorderName,
-                    recorderPhone: record.recorderPhone
+                    recorderPhone: record.recorderPhone,
+                    image: record.image
                 }
                 statisticArr.push(record)
             });
@@ -120,7 +122,8 @@ const StatisticController = {
                 userPhone: home.phoneNumber,
                 building: home.building,
                 code: home.code,
-                address: home.address
+                address: home.address,
+                waterMeterId: waterMeterId
             }
 
 
@@ -135,17 +138,63 @@ const StatisticController = {
         }
     },
 
+    add: async (req, res, next) => {
+        try {
+            const waterMeterId = req.params.waterMeterId
+            res.render('statistic/create', {
+                isLoggedIn: true,
+                admin: req.admin,
+                waterMeterId: waterMeterId
+            })
+        } catch (e) {
+            res.status(500).json(e)
+        }
+    },
+
     create: async (req, res, next) => {
         try {
-            const statistic = new Statistic(req.body)
-            const waterMeterId = req.body.waterMeterId
-            const waterMeter = await WaterMeter.findById(waterMeterId)
-            if (!waterMeter) {
-                return res.status(404).json("WaterMeter not found")
-            }
+            const waterMeterId = req.params.waterMeterId
+            const statistic = new Statistic({
+                ...req.body,
+                waterMeterId: waterMeterId
+            })
 
             await statistic.save()
-            res.status(200).json(statistic)
+            res.redirect('/statistic/' + waterMeterId + '/records')
+        } catch (e) {
+            res.status(500).json(e)
+        }
+    },
+
+    edit: async (req, res, next) => {
+        try {
+            const record = await Statistic.findById(req.params.id)
+
+            res.render('statistic/edit', {
+                isLoggedIn: true,
+                admin: req.admin,
+                record: mongooseToObject(record)
+            })
+        } catch (e) {
+            res.status(500).json(e)
+        }
+    },
+
+    update: async (req, res, next) => {
+        try {
+            const record = await Statistic.findById(req.params.id)
+            await Statistic.updateOne({ _id: req.params.id }, req.body);
+            // res.status(200).json("Updated successfully!")
+            res.redirect('/statistic/' + record.waterMeterId + '/records')
+        } catch (e) {
+            res.status(500).json(e)
+        }
+    },
+
+    delete: async (req, res, next) => {
+        try {
+            await Statistic.findByIdAndDelete(req.params.id)
+            res.redirect('back')
         } catch (e) {
             res.status(500).json(e)
         }

@@ -25,6 +25,8 @@
     </tbody>
 </table>
 
+<a href="/statistic/{{homeInfo.waterMeterId}}/add" class="mt-4 btn btn-success">Thêm bản ghi chỉ số đồng hồ</a>
+
 <table class="table mt-4">
     <thead>
         <tr>
@@ -33,6 +35,8 @@
             <th scope="col">Người ghi nhận</th>
             <th scope="col">SĐT người ghi</th>
             <th scope="col">Ngày ghi nhận</th>
+            <th scope="col">Ảnh</th>
+            <th scope="col">Action</th>
         </tr>
     </thead>
 
@@ -44,6 +48,12 @@
             <td>{{this.recorderName}}</td>
             <td>{{this.recorderPhone}}</td>
             <td>{{this.date}}</td>
+            <td><img class="w-25 h-25" src="{{this.image}}" alt="Ảnh"></td>
+            <td>
+                <a href="/statistic/{{this._id}}/edit" class="ms-1 btn btn-warning">Sửa</a>
+                <a class="ms-1 btn btn-danger" data-bs-toggle="modal" data-id="{{this._id}}"
+                    data-bs-target="#delete-record-modal">Xoá</a>
+            </td>
         </tr>
         {{else}}
         <tr>
@@ -54,3 +64,43 @@
         {{/each}}
     </tbody>
 </table>
+
+{{!-- Confirm delete record --}}
+<div id="delete-record-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xoá bản ghi chỉ số đồng hồ này?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Hành động này sẽ xoá dữ liệu bản ghi chỉ số đồng hồ. Bạn chắc chắn muốn xoá?
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-delete-record" type="button" class="btn btn-danger">Xoá bỏ</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{!-- Delete hidden form --}}
+<form name="delete-record-form" method="POST"></form>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script>
+    var deleteRecordModal = document.getElementById('delete-record-modal');
+    deleteRecordModal.addEventListener('show.bs.modal', (event) => {
+        var button = event.relatedTarget
+        var recordId = button.getAttribute('data-id')
+        var deleteForm = document.forms['delete-record-form']
+        var btnDeleteRecord = document.getElementById('btn-delete-record');
+
+        btnDeleteRecord.onclick = () => {
+            deleteForm.action = '/statistic/' + recordId + '?_method=delete'
+            deleteForm.submit()
+        }
+    })
+</script>

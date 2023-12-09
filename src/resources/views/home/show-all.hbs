@@ -3,7 +3,7 @@
     <input type="text" class="form-control" id="searchPhoneNumber" placeholder="Nhập SĐT để tìm kiếm">
 </div>
 
-<table class="table mt-4">
+<table class="table mt-4 align-middle">
     <thead>
         <tr>
             <th scope="col">STT</th>
@@ -26,7 +26,7 @@
             <td>{{this.address}}</td>
             <td><img class="w-25 h-25" src="{{this.qr}}" alt="Chưa có"></td>
             <td>
-                <a href="/home/home-details/{{this._id}}" class="btn btn-info">Thông tin</a>
+                <a href="/home/home-details/{{this._id}}" class="btn btn-info">Thông tin căn hộ</a>
                 <a href="/home/{{this._id}}/edit" class="ms-1 btn btn-warning">Sửa</a>
                 <a class="ms-1 btn btn-danger" data-bs-toggle="modal" data-id="{{this._id}}"
                     data-bs-target="#delete-home-modal">Xoá</a>

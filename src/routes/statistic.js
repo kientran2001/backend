@@ -9,8 +9,16 @@ router.get('/consumption', verifyToken, statisticController.calculateConsumption
 
 router.get('/:waterMeterId/records', verifyToken, statisticController.allRecords)
 
+router.get('/:waterMeterId/add', verifyToken, statisticController.add)
+router.post('/:waterMeterId/create', verifyToken, statisticController.create)
+
+router.get('/:id/edit', verifyToken, statisticController.edit)
+router.put('/:id/update', verifyToken, statisticController.update)
+
+router.delete('/:id', verifyToken, statisticController.delete)
+
+
 // Các api chưa dùng đến
-// router.post('/create', statisticController.create)
 // router.get('/statistic-of-home/:homeId', statisticController.statisticOfHome)
 
 module.exports = router

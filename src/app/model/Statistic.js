@@ -32,7 +32,7 @@ const Statistic = new Schema(
         }
     },
     {
-        timestamps: false,
+        timestamps: true,
     }
 );
 

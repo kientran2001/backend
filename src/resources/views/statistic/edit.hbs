@@ -1,0 +1,28 @@
+<div class="mt-4">
+    <h3>Cập nhật bản ghi chỉ số đồng hồ</h3>
+    <form method="POST" action="/statistic/{{record._id}}/update?_method=PUT">
+        {{!-- <div class="mb-3">
+            <label for="date" class="form-label">Ngày ghi nhận</label>
+            <input type="date" class="form-control" value="{{record.date}}" id="date" name="date">
+        </div> --}}
+
+        <div class="mb-3">
+            <label for="value" class="form-label">Giá trị</label>
+            <input type="number" class="form-control" value="{{record.value}}" id="value" name="value">
+        </div>
+
+        <div class="mb-3">
+            <label for="recorderName" class="form-label">Người ghi nhận</label>
+            <input type="recorderName" class="form-control" value="{{record.recorderName}}" id="recorderName"
+                name="recorderName">
+        </div>
+
+        <div class="mb-3">
+            <label for="recorderPhone" class="form-label">SĐT người ghi nhận</label>
+            <input type="number" class="form-control" value="{{record.recorderPhone}}" id="recorderPhone"
+                name="recorderPhone">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Lưu lại</button>
+    </form>
+</div>
