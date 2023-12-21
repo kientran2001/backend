@@ -57,8 +57,8 @@ const StatisticController = {
             ]);
 
             for (const record of result) {
-                record.firstDate = record.firstDate.toLocaleDateString('en-GB')
-                record.secondDate = record.secondDate.toLocaleDateString('en-GB')
+                record.firstDate = moment(record.firstDate).format("DD/MM/YYYY")
+                record.secondDate = moment(record.secondDate).format("DD/MM/YYYY")
                 const waterMeterId = record.waterMeterId;
                 const waterMeter = await WaterMeter.findById(waterMeterId)
 
@@ -109,7 +109,7 @@ const StatisticController = {
                     _id: record._id,
                     waterMeterId: record.waterMeterId,
                     value: record.value,
-                    date: moment(record.date).format('DD-MM-YYYY'),
+                    date: moment(record.date).format('DD/MM/YYYY'),
                     recorderName: record.recorderName,
                     recorderPhone: record.recorderPhone,
                     image: record.image
@@ -173,7 +173,8 @@ const StatisticController = {
             res.render('statistic/edit', {
                 isLoggedIn: true,
                 admin: req.admin,
-                record: mongooseToObject(record)
+                record: mongooseToObject(record),
+                recordDate: mongooseToObject(moment(record.date).format("DD/MM/YYYY"))
             })
         } catch (e) {
             res.status(500).json(e)
@@ -183,7 +184,11 @@ const StatisticController = {
     update: async (req, res, next) => {
         try {
             const record = await Statistic.findById(req.params.id)
-            await Statistic.updateOne({ _id: req.params.id }, req.body);
+            const newDate = new Date(req.body.date)
+            await Statistic.updateOne({ _id: req.params.id }, {
+                ...req.body,
+                date: moment(newDate).format('DD/MM/YYYY')
+            });
             // res.status(200).json("Updated successfully!")
             res.redirect('/statistic/' + record.waterMeterId + '/records')
         } catch (e) {

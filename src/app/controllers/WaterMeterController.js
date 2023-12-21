@@ -25,7 +25,7 @@ const WaterMeterController = {
                 _id: waterMeter._id,
                 code: waterMeter.code,
                 homeId: waterMeter.homeId,
-                dateInstallation: moment(waterMeter.dateInstallation).format('DD-MM-YYYY'),
+                dateInstallation: moment(waterMeter.dateInstallation).format('DD/MM/YYYY'),
                 qr: waterMeter.qr
             }
 

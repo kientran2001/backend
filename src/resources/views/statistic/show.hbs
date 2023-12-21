@@ -32,9 +32,9 @@
         <tr>
             <th scope="col">STT</th>
             <th scope="col">Chỉ số</th>
+            <th scope="col">Ngày ghi nhận</th>
             <th scope="col">Người ghi nhận</th>
             <th scope="col">SĐT người ghi</th>
-            <th scope="col">Ngày ghi nhận</th>
             <th scope="col">Ảnh</th>
             <th scope="col">Action</th>
         </tr>
@@ -45,9 +45,9 @@
         <tr>
             <th scope="row">{{sum @index 1}}</th>
             <td>{{this.value}}</td>
+            <td>{{this.date}}</td>
             <td>{{this.recorderName}}</td>
             <td>{{this.recorderPhone}}</td>
-            <td>{{this.date}}</td>
             <td><img class="w-25 h-25" src="{{this.image}}" alt="Ảnh"></td>
             <td>
                 <a href="/statistic/{{this._id}}/edit" class="ms-1 btn btn-warning">Sửa</a>
