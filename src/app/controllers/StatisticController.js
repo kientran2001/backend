@@ -88,7 +88,7 @@ const StatisticController = {
             })
         } catch (e) {
             console.error(e);
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -134,7 +134,7 @@ const StatisticController = {
                 statistic: multipleMongooseToObject(statisticArr)
             })
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -147,7 +147,7 @@ const StatisticController = {
                 waterMeterId: waterMeterId
             })
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -162,7 +162,7 @@ const StatisticController = {
             await statistic.save()
             res.redirect('/statistic/' + waterMeterId + '/records')
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -177,7 +177,7 @@ const StatisticController = {
                 recordDate: mongooseToObject(moment(record.date).format("DD/MM/YYYY"))
             })
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -192,7 +192,7 @@ const StatisticController = {
             // res.status(200).json("Updated successfully!")
             res.redirect('/statistic/' + record.waterMeterId + '/records')
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -201,7 +201,7 @@ const StatisticController = {
             await Statistic.findByIdAndDelete(req.params.id)
             res.redirect('back')
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -226,7 +226,7 @@ const StatisticController = {
             res.status(200).json(statistics)
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Internal Server Error' });
+            return res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 }

@@ -14,7 +14,7 @@ const WaterMeterController = {
             const waterMeters = await WaterMeter.find({})
             res.status(200).json(waterMeters)
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -35,7 +35,7 @@ const WaterMeterController = {
                 waterMeter: mongooseToObject(data)
             })
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -53,7 +53,7 @@ const WaterMeterController = {
                 })
             }
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -82,7 +82,7 @@ const WaterMeterController = {
             // res.status(200).json(waterMeter)
             res.redirect('/home/home-details/' + home._id)
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -91,7 +91,7 @@ const WaterMeterController = {
             await WaterMeter.updateOne({ _id: req.params.id }, req.body)
             res.status(200).json("Updated successfully!")
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -110,7 +110,7 @@ const WaterMeterController = {
             // res.status(200).json("Deleted successfully");
             res.redirect('back')
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -132,7 +132,7 @@ const WaterMeterController = {
             res.status(200).json(home);
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: 'Internal Server Error' });
+            return res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 }

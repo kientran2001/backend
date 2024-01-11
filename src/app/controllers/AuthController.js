@@ -26,7 +26,7 @@ const AuthController = {
             // res.status(200).json(user)
             return res.redirect('/user')
         } catch (err) {
-            res.status(500).json(err);
+            return res.status(500).json(err);
         }
     },
 
@@ -95,7 +95,7 @@ const AuthController = {
                 })
             }
         } catch (err) {
-            res.status(500).json(err)
+            return res.status(500).json(err)
         }
     },
 

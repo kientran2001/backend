@@ -13,7 +13,7 @@ const AppController = {
         try {
             const user = await User.findOne({ phoneNumber: req.body.phoneNumber })
             if (!user) {
-                res.status(404).json("Wrong phone number!")
+                return res.status(404).json("Wrong phone number!")
             }
 
             const validPassword = await bcrypt.compare(
@@ -32,13 +32,13 @@ const AppController = {
                     role: user.role
                 }
 
-                res.status(200).json(staff)
+                return res.status(200).json(staff)
             } else {
-                res.status(404).json("User not found")
+                return res.status(404).json("User not found")
             }
         } catch (e) {
             // console.error(e)
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -56,9 +56,9 @@ const AppController = {
                 return res.status(404).json('Chưa có dữ liệu của đồng hồ này')
             }
 
-            res.status(200).json(statistic[0])
+            return res.status(200).json(statistic[0])
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -82,9 +82,9 @@ const AppController = {
             })
 
             await record.save()
-            res.status(200).json('Ghi dữ liệu thành công!')
+            return res.status(200).json('Ghi dữ liệu thành công!')
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     }
 }

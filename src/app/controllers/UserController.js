@@ -17,7 +17,7 @@ const UserController = {
                 users: multipleMongooseToObject(users)
             })
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -33,7 +33,7 @@ const UserController = {
                 homes: multipleMongooseToObject(homes)
             })
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -53,7 +53,7 @@ const UserController = {
                 user: mongooseToObject(user)
             })
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -72,7 +72,7 @@ const UserController = {
             }
             res.redirect('/user')
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -93,7 +93,7 @@ const UserController = {
             // res.status(200).json("Deleted successfully!")
             res.redirect('back')
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -108,7 +108,7 @@ const UserController = {
             const homes = await Home.find({ _id: { $in: user.homes } })
             res.status(200).json(homes);
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     }
 }

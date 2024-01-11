@@ -36,7 +36,7 @@ const HomeController = {
                 homes: multipleMongooseToObject(homeArr)
             })
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -50,7 +50,7 @@ const HomeController = {
                 home: mongooseToObject(home)
             })
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -78,7 +78,7 @@ const HomeController = {
             // res.status(200).json(home)
             res.redirect('/home')
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -91,7 +91,7 @@ const HomeController = {
                 home: mongooseToObject(home)
             })
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -101,7 +101,7 @@ const HomeController = {
             // res.status(200).json("Updated successfully!")
             res.redirect('/home')
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -128,7 +128,7 @@ const HomeController = {
             // res.status(200).json("Deleted successfully!")
             res.redirect('back')
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -150,7 +150,7 @@ const HomeController = {
             await home.save()
             res.redirect('back')
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -171,7 +171,7 @@ const HomeController = {
             await home.save()
             res.redirect('/home/home-details/' + homeId)
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -186,7 +186,7 @@ const HomeController = {
             const user = await User.findOne({ phoneNumber: phoneNumber })
             res.status(200).json(user)
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     },
 
@@ -201,7 +201,7 @@ const HomeController = {
             const waterMeter = await WaterMeter.findById(home.waterMeterId)
             res.status(200).json(waterMeter)
         } catch (e) {
-            res.status(500).json(e)
+            return res.status(500).json(e)
         }
     }
 }
